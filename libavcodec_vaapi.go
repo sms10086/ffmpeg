@@ -26,6 +26,10 @@
 
 package ffmpeg
 
+import (
+    "unsafe"
+)
+
 
 
 
@@ -44,50 +48,31 @@ package ffmpeg
 
                                
 
-   
-                                                     
-                              
-     
-   
+/**
+ * @defgroup lavc_codec_hwaccel_vaapi VA API Decoding
+ * @ingroup lavc_codec_hwaccel
+ * @{
+ */
 
-   
-                                                                      
-                                
-                                                
-                                                                   
-                                                                    
-                                                                  
-                      
-  
-                                                        
-   
-                                           
-       
-                                   
-      
-                         
-                              
-       
-                  
+/**
+ * This structure is used to share data between the FFmpeg library and
+ * the client video application.
+ * This shall be zero-allocated and available as
+ * AVCodecContext.hwaccel_context. All user members can be set once
+ * during initialization or through each AVCodecContext.get_buffer()
+ * function call. In any case, they must be valid prior to calling
+ * decoding functions.
+ *
+ * Deprecated: use AVCodecContext.hw_frames_ctx instead.
+ */
+type vaapi_context struct {
+    Display unsafe.Pointer
+    Config_id uint32
+    Context_id uint32
+}
 
-       
-                       
-      
-                         
-                              
-       
-                       
 
-       
-                                         
-      
-                         
-                              
-       
-                        
-  
-
-        
+/* @} */
 
                                         
 

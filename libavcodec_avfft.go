@@ -30,6 +30,7 @@ import (
 
 
 
+
                        
                        
 
@@ -48,9 +49,15 @@ import (
 
 type FFTSample float32
 
-type FFTComplex C.struct_FFTComplex
+type FFTComplex struct {
+    Re FFTSample
+    Im FFTSample
+}
 
-type FFTContext C.struct_FFTContext
+
+type FFTContext struct {
+}
+
 
 /**
  * Set up a complex FFT.
@@ -65,8 +72,8 @@ func Av_fft_init(nbits int32, inverse int32) *FFTContext {
  * Do the permutation needed BEFORE calling ff_fft_calc().
  */
 func Av_fft_permute(s *FFTContext, z *FFTComplex)  {
-    C.av_fft_permute((*C.FFTContext)(unsafe.Pointer(s)), 
-        (*C.FFTComplex)(unsafe.Pointer(z)))
+    C.av_fft_permute((*C.struct_FFTContext)(unsafe.Pointer(s)), 
+        (*C.struct_FFTComplex)(unsafe.Pointer(z)))
 }
 
 /**
@@ -74,12 +81,12 @@ func Av_fft_permute(s *FFTContext, z *FFTComplex)  {
  * input data must be permuted before. No 1.0/sqrt(n) normalization is done.
  */
 func Av_fft_calc(s *FFTContext, z *FFTComplex)  {
-    C.av_fft_calc((*C.FFTContext)(unsafe.Pointer(s)), 
-        (*C.FFTComplex)(unsafe.Pointer(z)))
+    C.av_fft_calc((*C.struct_FFTContext)(unsafe.Pointer(s)), 
+        (*C.struct_FFTComplex)(unsafe.Pointer(z)))
 }
 
 func Av_fft_end(s *FFTContext)  {
-    C.av_fft_end((*C.FFTContext)(unsafe.Pointer(s)))
+    C.av_fft_end((*C.struct_FFTContext)(unsafe.Pointer(s)))
 }
 
 func Av_mdct_init(nbits int32, inverse int32, scale float64) *FFTContext {
@@ -87,29 +94,38 @@ func Av_mdct_init(nbits int32, inverse int32, scale float64) *FFTContext {
         C.double(scale))))
 }
 func Av_imdct_calc(s *FFTContext, output *FFTSample, input *FFTSample)  {
-    C.av_imdct_calc((*C.FFTContext)(unsafe.Pointer(s)), 
+    C.av_imdct_calc((*C.struct_FFTContext)(unsafe.Pointer(s)), 
         (*C.FFTSample)(unsafe.Pointer(output)), 
         (*C.FFTSample)(unsafe.Pointer(input)))
 }
 func Av_imdct_half(s *FFTContext, output *FFTSample, input *FFTSample)  {
-    C.av_imdct_half((*C.FFTContext)(unsafe.Pointer(s)), 
+    C.av_imdct_half((*C.struct_FFTContext)(unsafe.Pointer(s)), 
         (*C.FFTSample)(unsafe.Pointer(output)), 
         (*C.FFTSample)(unsafe.Pointer(input)))
 }
 func Av_mdct_calc(s *FFTContext, output *FFTSample, input *FFTSample)  {
-    C.av_mdct_calc((*C.FFTContext)(unsafe.Pointer(s)), 
+    C.av_mdct_calc((*C.struct_FFTContext)(unsafe.Pointer(s)), 
         (*C.FFTSample)(unsafe.Pointer(output)), 
         (*C.FFTSample)(unsafe.Pointer(input)))
 }
 func Av_mdct_end(s *FFTContext)  {
-    C.av_mdct_end((*C.FFTContext)(unsafe.Pointer(s)))
+    C.av_mdct_end((*C.struct_FFTContext)(unsafe.Pointer(s)))
 }
 
 /* Real Discrete Fourier Transform */
 
-type RDFTransformType C.enum_RDFTransformType
+type RDFTransformType int32
+const (
+    DFT_R2C RDFTransformType = iota
+    IDFT_C2R
+    IDFT_R2C
+    DFT_C2R
+)
 
-type RDFTContext C.struct_RDFTContext
+
+type RDFTContext struct {
+}
+
 
 /**
  * Set up a real FFT.
@@ -121,18 +137,27 @@ func Av_rdft_init(nbits int32, trans RDFTransformType) *RDFTContext {
         C.enum_RDFTransformType(trans))))
 }
 func Av_rdft_calc(s *RDFTContext, data *FFTSample)  {
-    C.av_rdft_calc((*C.RDFTContext)(unsafe.Pointer(s)), 
+    C.av_rdft_calc((*C.struct_RDFTContext)(unsafe.Pointer(s)), 
         (*C.FFTSample)(unsafe.Pointer(data)))
 }
 func Av_rdft_end(s *RDFTContext)  {
-    C.av_rdft_end((*C.RDFTContext)(unsafe.Pointer(s)))
+    C.av_rdft_end((*C.struct_RDFTContext)(unsafe.Pointer(s)))
 }
 
 /* Discrete Cosine Transform */
 
-type DCTContext C.struct_DCTContext
+type DCTContext struct {
+}
 
-type DCTTransformType C.enum_DCTTransformType
+
+type DCTTransformType int32
+const (
+    DCT_II DCTTransformType = 0 + iota
+    DCT_III
+    DCT_I
+    DST_I
+)
+
 
 /**
  * Set up DCT.
@@ -149,11 +174,11 @@ func Av_dct_init(nbits int32, typex DCTTransformType) *DCTContext {
         C.enum_DCTTransformType(typex))))
 }
 func Av_dct_calc(s *DCTContext, data *FFTSample)  {
-    C.av_dct_calc((*C.DCTContext)(unsafe.Pointer(s)), 
+    C.av_dct_calc((*C.struct_DCTContext)(unsafe.Pointer(s)), 
         (*C.FFTSample)(unsafe.Pointer(data)))
 }
 func Av_dct_end (s *DCTContext)  {
-    C.av_dct_end((*C.DCTContext)(unsafe.Pointer(s)))
+    C.av_dct_end((*C.struct_DCTContext)(unsafe.Pointer(s)))
 }
 
 /**

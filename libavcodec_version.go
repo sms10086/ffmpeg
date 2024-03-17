@@ -25,37 +25,11 @@ package ffmpeg
 //const LIBAVCODEC_VERSION_MAJOR = 58
 //const LIBAVCODEC_VERSION_MINOR = 35
 //const LIBAVCODEC_VERSION_MICRO = 100
-//const LIBAVCODEC_VERSION_INT = AV_VERSION_INT(LIBAVCODEC_VERSION_MAJOR,                                                 LIBAVCODEC_VERSION_MINOR,                                                 LIBAVCODEC_VERSION_MICRO)
-//const LIBAVCODEC_VERSION = AV_VERSION(LIBAVCODEC_VERSION_MAJOR,                                                LIBAVCODEC_VERSION_MINOR,                                                LIBAVCODEC_VERSION_MICRO)
-//const LIBAVCODEC_BUILD = LIBAVCODEC_VERSION_INT
-//const LIBAVCODEC_IDENT = "Lavc" AV_STRINGIFY(LIBAVCODEC_VERSION)
-//const FF_API_LOWRES = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_DEBUG_MV = (LIBAVCODEC_VERSION_MAJOR < 58)
-//const FF_API_AVCTX_TIMEBASE = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_CODED_FRAME = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_SIDEDATA_ONLY_PKT = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_VDPAU_PROFILE = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_CONVERGENCE_DURATION = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_AVPICTURE = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_AVPACKET_OLD_API = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_RTP_CALLBACK = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_VBV_DELAY = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_CODER_TYPE = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_STAT_BITS = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_PRIVATE_OPT = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_ASS_TIMING = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_OLD_BSF = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_COPY_CONTEXT = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_GET_CONTEXT_DEFAULTS = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_NVENC_OLD_NAME = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_STRUCT_VAAPI_CONTEXT = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_MERGE_SD_API = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_TAG_STRING = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_GETCHROMA = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_CODEC_GET_SET = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_USER_VISIBLE_AVHWACCEL = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_LOCKMGR = (LIBAVCODEC_VERSION_MAJOR < 59)
-//const FF_API_NEXT = (LIBAVCODEC_VERSION_MAJOR < 59)
+//const LIBAVCODEC_VERSION_INT =   AV_VERSION_INT(LIBAVCODEC_VERSION_MAJOR,                                                 LIBAVCODEC_VERSION_MINOR,                                                 LIBAVCODEC_VERSION_MICRO) 
+//const LIBAVCODEC_VERSION =       AV_VERSION(LIBAVCODEC_VERSION_MAJOR,                                                LIBAVCODEC_VERSION_MINOR,                                                LIBAVCODEC_VERSION_MICRO) 
+//const LIBAVCODEC_BUILD =         LIBAVCODEC_VERSION_INT 
+//const LIBAVCODEC_IDENT =         "Lavc" AV_STRINGIFY(LIBAVCODEC_VERSION) 
+
 
 
                          
@@ -90,85 +64,85 @@ package ffmpeg
  */
 
                      
-
+                                                                
       
                        
-
+                                                                
       
                              
-
+                                                                
       
                           
-
+                                                                
       
                                 
-
+                                                                
       
                             
-
+                                                                
       
                                    
-
+                                                                   
       
                         
-
+                                                                
       
                                
-
+                                                               
       
                            
-
+                                                                
       
                         
-
+                                                                
       
                          
-
+                                                                
       
                         
-
+                                                                
       
                           
-
+                                                               
       
                          
-
+                                                               
       
                       
-
+                                                               
       
                            
-
+                                                               
       
                                    
-
+                                                                   
       
                              
-
+                                                                
       
                                    
-
+                                                                   
       
                            
-
+                                                                
       
                          
-
+                                                                
       
                         
-
+                                                                
       
                             
-
+                                                                
       
                                      
-
+                                                                     
       
                       
-
+                                                      
       
                    
-
+                                                                
       
 
 
