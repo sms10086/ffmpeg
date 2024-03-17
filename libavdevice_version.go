@@ -25,10 +25,11 @@ package ffmpeg
 //const LIBAVDEVICE_VERSION_MAJOR = 58
 //const LIBAVDEVICE_VERSION_MINOR = 5
 //const LIBAVDEVICE_VERSION_MICRO = 100
-//const LIBAVDEVICE_VERSION_INT = AV_VERSION_INT(LIBAVDEVICE_VERSION_MAJOR,                                                 LIBAVDEVICE_VERSION_MINOR,                                                 LIBAVDEVICE_VERSION_MICRO)
-//const LIBAVDEVICE_VERSION = AV_VERSION(LIBAVDEVICE_VERSION_MAJOR,                                             LIBAVDEVICE_VERSION_MINOR,                                             LIBAVDEVICE_VERSION_MICRO)
-//const LIBAVDEVICE_BUILD = LIBAVDEVICE_VERSION_INT
-//const LIBAVDEVICE_IDENT = "Lavd" AV_STRINGIFY(LIBAVDEVICE_VERSION)
+//const LIBAVDEVICE_VERSION_INT =  AV_VERSION_INT(LIBAVDEVICE_VERSION_MAJOR,                                                 LIBAVDEVICE_VERSION_MINOR,                                                 LIBAVDEVICE_VERSION_MICRO) 
+//const LIBAVDEVICE_VERSION =      AV_VERSION(LIBAVDEVICE_VERSION_MAJOR,                                             LIBAVDEVICE_VERSION_MINOR,                                             LIBAVDEVICE_VERSION_MICRO) 
+//const LIBAVDEVICE_BUILD =        LIBAVDEVICE_VERSION_INT 
+//const LIBAVDEVICE_IDENT =        "Lavd" AV_STRINGIFY(LIBAVDEVICE_VERSION) 
+
 
 
                           

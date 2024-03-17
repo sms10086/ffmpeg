@@ -37,75 +37,77 @@ import (
     "unsafe"
 )
 
-const AVPROBE_SCORE_RETRY = (AVPROBE_SCORE_MAX / 4)
-const AVPROBE_SCORE_STREAM_RETRY = (AVPROBE_SCORE_MAX / 4-1)
+const AVPROBE_SCORE_RETRY = 25
+const AVPROBE_SCORE_STREAM_RETRY = 24
 const AVPROBE_SCORE_EXTENSION = 50
 const AVPROBE_SCORE_MIME = 75
 const AVPROBE_SCORE_MAX = 100
 const AVPROBE_PADDING_SIZE = 32
-const AVFMT_NOFILE = 0x0001
-const AVFMT_NEEDNUMBER = 0x0002
-const AVFMT_SHOW_IDS = 0x0008
-const AVFMT_GLOBALHEADER = 0x0040
-const AVFMT_NOTIMESTAMPS = 0x0080
-const AVFMT_GENERIC_INDEX = 0x0100
-const AVFMT_TS_DISCONT = 0x0200
-const AVFMT_VARIABLE_FPS = 0x0400
-const AVFMT_NODIMENSIONS = 0x0800
-const AVFMT_NOSTREAMS = 0x1000
-const AVFMT_NOBINSEARCH = 0x2000
-const AVFMT_NOGENSEARCH = 0x4000
-const AVFMT_NO_BYTE_SEEK = 0x8000
-const AVFMT_ALLOW_FLUSH = 0x10000
-const AVFMT_TS_NONSTRICT = 0x20000
-const AVFMT_TS_NEGATIVE = 0x40000
-const AVFMT_SEEK_TO_PTS = 0x4000000
-const AVINDEX_KEYFRAME = 0x0001
-const AVINDEX_DISCARD_FRAME = 0x0002
-const AV_DISPOSITION_DEFAULT = 0x0001
-const AV_DISPOSITION_DUB = 0x0002
-const AV_DISPOSITION_ORIGINAL = 0x0004
-const AV_DISPOSITION_COMMENT = 0x0008
-const AV_DISPOSITION_LYRICS = 0x0010
-const AV_DISPOSITION_KARAOKE = 0x0020
-const AV_DISPOSITION_FORCED = 0x0040
-const AV_DISPOSITION_HEARING_IMPAIRED = 0x0080
-const AV_DISPOSITION_VISUAL_IMPAIRED = 0x0100
-const AV_DISPOSITION_CLEAN_EFFECTS = 0x0200
-const AV_DISPOSITION_ATTACHED_PIC = 0x0400
-const AV_DISPOSITION_TIMED_THUMBNAILS = 0x0800
-const AV_DISPOSITION_CAPTIONS = 0x10000
-const AV_DISPOSITION_DESCRIPTIONS = 0x20000
-const AV_DISPOSITION_METADATA = 0x40000
-const AV_DISPOSITION_DEPENDENT = 0x80000
-const AV_DISPOSITION_STILL_IMAGE = 0x100000
+const AVFMT_NOFILE =         0x0001 
+const AVFMT_NEEDNUMBER =     0x0002  
+const AVFMT_SHOW_IDS =       0x0008  
+const AVFMT_GLOBALHEADER =   0x0040  
+const AVFMT_NOTIMESTAMPS =   0x0080  
+const AVFMT_GENERIC_INDEX =  0x0100  
+const AVFMT_TS_DISCONT =     0x0200  
+const AVFMT_VARIABLE_FPS =   0x0400  
+const AVFMT_NODIMENSIONS =   0x0800  
+const AVFMT_NOSTREAMS =      0x1000  
+const AVFMT_NOBINSEARCH =    0x2000  
+const AVFMT_NOGENSEARCH =    0x4000  
+const AVFMT_NO_BYTE_SEEK =   0x8000  
+const AVFMT_ALLOW_FLUSH =   0x10000  
+const AVFMT_TS_NONSTRICT =  0x20000  
+const AVFMT_TS_NEGATIVE =   0x40000  
+const AVFMT_SEEK_TO_PTS =    0x4000000  
+const AVINDEX_KEYFRAME =  0x0001 
+const AVINDEX_DISCARD_FRAME =   0x0002     
+const AV_DISPOSITION_DEFAULT =    0x0001 
+const AV_DISPOSITION_DUB =        0x0002 
+const AV_DISPOSITION_ORIGINAL =   0x0004 
+const AV_DISPOSITION_COMMENT =    0x0008 
+const AV_DISPOSITION_LYRICS =     0x0010 
+const AV_DISPOSITION_KARAOKE =    0x0020 
+const AV_DISPOSITION_FORCED =     0x0040 
+const AV_DISPOSITION_HEARING_IMPAIRED =   0x0080   
+const AV_DISPOSITION_VISUAL_IMPAIRED =    0x0100   
+const AV_DISPOSITION_CLEAN_EFFECTS =      0x0200   
+const AV_DISPOSITION_ATTACHED_PIC =       0x0400 
+const AV_DISPOSITION_TIMED_THUMBNAILS =   0x0800 
+const AV_DISPOSITION_CAPTIONS =      0x10000 
+const AV_DISPOSITION_DESCRIPTIONS =  0x20000 
+const AV_DISPOSITION_METADATA =      0x40000 
+const AV_DISPOSITION_DEPENDENT =     0x80000  
+const AV_DISPOSITION_STILL_IMAGE =  0x100000  
 const AV_PTS_WRAP_IGNORE = 0
 const AV_PTS_WRAP_ADD_OFFSET = 1
 const AV_PTS_WRAP_SUB_OFFSET = -1
-const AVSTREAM_EVENT_FLAG_METADATA_UPDATED = 0x0001
-const MAX_STD_TIMEBASES = (30*12+30+3+6)
+const AVSTREAM_EVENT_FLAG_METADATA_UPDATED =  0x0001  
+const MAX_STD_TIMEBASES = 399
 const MAX_REORDER_DELAY = 16
 const AV_PROGRAM_RUNNING = 1
-const AVFMTCTX_NOHEADER = 0x0001
-const AVFMTCTX_UNSEEKABLE = 0x0002
-const AVFMT_FLAG_GENPTS = 0x0001
-const AVFMT_FLAG_IGNIDX = 0x0002
-const AVFMT_FLAG_NONBLOCK = 0x0004
-const AVFMT_FLAG_IGNDTS = 0x0008
-const AVFMT_FLAG_NOFILLIN = 0x0010
-const AVFMT_FLAG_NOPARSE = 0x0020
-const AVFMT_FLAG_NOBUFFER = 0x0040
-const AVFMT_FLAG_CUSTOM_IO = 0x0080
-const AVFMT_FLAG_DISCARD_CORRUPT = 0x0100
-const AVFMT_FLAG_FLUSH_PACKETS = 0x0200
-const AVFMT_FLAG_BITEXACT = 0x0400
-const AVFMT_FLAG_SORT_DTS = 0x10000
-const AVFMT_FLAG_PRIV_OPT = 0x20000
-const AVFMT_FLAG_FAST_SEEK = 0x80000
-const AVFMT_FLAG_SHORTEST = 0x100000
-const AVFMT_FLAG_AUTO_BSF = 0x200000
-const FF_FDEBUG_TS = 0x0001
-const AVFMT_EVENT_FLAG_METADATA_UPDATED = 0x0001
+const AVFMTCTX_NOHEADER =       0x0001  
+const AVFMTCTX_UNSEEKABLE =     0x0002  
+const AVFMT_FLAG_GENPTS =        0x0001  
+const AVFMT_FLAG_IGNIDX =        0x0002  
+const AVFMT_FLAG_NONBLOCK =      0x0004  
+const AVFMT_FLAG_IGNDTS =        0x0008  
+const AVFMT_FLAG_NOFILLIN =      0x0010  
+const AVFMT_FLAG_NOPARSE =       0x0020  
+const AVFMT_FLAG_NOBUFFER =      0x0040  
+const AVFMT_FLAG_CUSTOM_IO =     0x0080  
+const AVFMT_FLAG_DISCARD_CORRUPT =   0x0100  
+const AVFMT_FLAG_FLUSH_PACKETS =     0x0200  
+const AVFMT_FLAG_BITEXACT =          0x0400 
+const AVFMT_FLAG_MP4A_LATM =     0x8000  
+const AVFMT_FLAG_SORT_DTS =     0x10000  
+const AVFMT_FLAG_PRIV_OPT =     0x20000  
+const AVFMT_FLAG_KEEP_SIDE_DATA =  0x40000  
+const AVFMT_FLAG_FAST_SEEK =    0x80000  
+const AVFMT_FLAG_SHORTEST =    0x100000  
+const AVFMT_FLAG_AUTO_BSF =    0x200000  
+const FF_FDEBUG_TS =         0x0001 
+const AVFMT_EVENT_FLAG_METADATA_UPDATED =  0x0001  
 const AVFMT_AVOID_NEG_TS_AUTO = -1
 const AVFMT_AVOID_NEG_TS_MAKE_NON_NEGATIVE = 1
 const AVFMT_AVOID_NEG_TS_MAKE_ZERO = 2
@@ -116,6 +118,24 @@ const AVSEEK_FLAG_FRAME = 8
 const AVSTREAM_INIT_IN_WRITE_HEADER = 0
 const AVSTREAM_INIT_IN_INIT_OUTPUT = 1
 const AV_FRAME_FILENAME_FLAGS_MULTIPLE = 1
+
+type AVStream_Ams21 struct {
+    Last_dts int64
+    Duration_gcd int64
+    Duration_count int32
+    Rfps_duration_sum int64
+    Duration_error* [2][MAX_STD_TIMEBASES]float64
+    Codec_info_duration int64
+    Codec_info_duration_fields int64
+    Frame_delay_evidence int32
+    Found_decoder int32
+    Last_duration int64
+    Fps_first_dts int64
+    Fps_first_dts_idx int32
+    Fps_last_dts int64
+    Fps_last_dts_idx int32
+}
+
 
 
                            
@@ -423,10 +443,10 @@ const AV_FRAME_FILENAME_FLAGS_MULTIPLE = 1
                  
                                 
 
-type AVFormatContext C.struct_AVFormatContext
+// type AVFormatContext
 
-
-
+// type AVDeviceInfoList
+// type AVDeviceCapabilitiesQuery
 
 /**
  * @defgroup metadata_api Public Metadata API
@@ -519,8 +539,8 @@ type AVFormatContext C.struct_AVFormatContext
  * @return >0 (read size) if OK, AVERROR_xxx otherwise
  */
 func Av_get_packet(s *AVIOContext, pkt *AVPacket, size int32) int32 {
-    return int32(C.av_get_packet((*C.AVIOContext)(unsafe.Pointer(s)), 
-        (*C.AVPacket)(unsafe.Pointer(pkt)), C.int(size)))
+    return int32(C.av_get_packet((*C.struct_AVIOContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt)), C.int(size)))
 }
 
 
@@ -539,19 +559,27 @@ func Av_get_packet(s *AVIOContext, pkt *AVPacket, size int32) int32 {
  *         will not be lost even if an error occurs.
  */
 func Av_append_packet(s *AVIOContext, pkt *AVPacket, size int32) int32 {
-    return int32(C.av_append_packet((*C.AVIOContext)(unsafe.Pointer(s)), 
-        (*C.AVPacket)(unsafe.Pointer(pkt)), C.int(size)))
+    return int32(C.av_append_packet((*C.struct_AVIOContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt)), C.int(size)))
 }
 
 /*************************************************/
 /* input/output formats */
 
-type AVCodecTag C.struct_AVCodecTag
+type AVCodecTag struct {
+}
+
 
 /**
  * This structure contains the data a format has to probe a file.
  */
-type AVProbeData C.struct_AVProbeData
+type AVProbeData struct {
+    Filename *byte
+    Buf *uint8
+    Buf_size int32
+    Mime_type *byte
+}
+
 
 
 
@@ -595,7 +623,36 @@ type AVProbeData C.struct_AVProbeData
  * @addtogroup lavf_encoding
  * @{
  */
-type AVOutputFormat C.struct_AVOutputFormat
+type AVOutputFormat struct {
+    Name *byte
+    Long_name *byte
+    Mime_type *byte
+    Extensions *byte
+    Audio_codec AVCodecID
+    Video_codec AVCodecID
+    Subtitle_codec AVCodecID
+    Flags int32
+    Codec_tag **AVCodecTag
+    Priv_class *AVClass
+    Next *AVOutputFormat
+    Priv_data_size int32
+    Write_header uintptr
+    Write_packet uintptr
+    Write_trailer uintptr
+    Interleave_packet uintptr
+    Query_codec uintptr
+    Get_output_timestamp uintptr
+    Control_message uintptr
+    Write_uncoded_frame uintptr
+    Get_device_list uintptr
+    Create_device_capabilities uintptr
+    Free_device_capabilities uintptr
+    Data_codec AVCodecID
+    Init uintptr
+    Deinit uintptr
+    Check_bitstream uintptr
+}
+
 /**
  * @}
  */
@@ -604,14 +661,47 @@ type AVOutputFormat C.struct_AVOutputFormat
  * @addtogroup lavf_decoding
  * @{
  */
-type AVInputFormat C.struct_AVInputFormat
+type AVInputFormat struct {
+    Name *byte
+    Long_name *byte
+    Flags int32
+    Extensions *byte
+    Codec_tag **AVCodecTag
+    Priv_class *AVClass
+    Mime_type *byte
+    Next *AVInputFormat
+    Raw_codec_id int32
+    Priv_data_size int32
+    Read_probe uintptr
+    Read_header uintptr
+    Read_packet uintptr
+    Read_close uintptr
+    Read_seek uintptr
+    Read_timestamp uintptr
+    Read_play uintptr
+    Read_pause uintptr
+    Read_seek2 uintptr
+    Get_device_list uintptr
+    Create_device_capabilities uintptr
+    Free_device_capabilities uintptr
+}
+
 /**
  * @}
  */
 
-type AVStreamParseType C.enum_AVStreamParseType
+type AVStreamParseType int32
+const (
+    AVSTREAM_PARSE_NONE AVStreamParseType = iota
+    AVSTREAM_PARSE_FULL
+    AVSTREAM_PARSE_HEADERS
+    AVSTREAM_PARSE_TIMESTAMPS
+    AVSTREAM_PARSE_FULL_ONCE
+    AVSTREAM_PARSE_FULL_RAW
+)
 
-type AVIndexEntry C.struct_AVIndexEntry
+
+// type AVIndexEntry
 
 
 
@@ -643,7 +733,9 @@ type AVIndexEntry C.struct_AVIndexEntry
  */
 
 
-type AVStreamInternal C.struct_AVStreamInternal
+type AVStreamInternal struct {
+}
+
 
 /**
  * To specify text track kind (different from subtitles default).
@@ -668,28 +760,104 @@ type AVStreamInternal C.struct_AVStreamInternal
  * version bump.
  * sizeof(AVStream) must not be used outside libav*.
  */
-type AVStream C.struct_AVStream
+type AVStream struct {
+    Index int32
+    Id int32
+    Codec *AVCodecContext
+    Priv_data unsafe.Pointer
+    Time_base AVRational
+    Start_time int64
+    Duration int64
+    Nb_frames int64
+    Disposition int32
+    Discard AVDiscard
+    Sample_aspect_ratio AVRational
+    Metadata *AVDictionary
+    Avg_frame_rate AVRational
+    Attached_pic AVPacket
+    Side_data *AVPacketSideData
+    Nb_side_data int32
+    Event_flags int32
+    R_frame_rate AVRational
+    Recommended_encoder_configuration *byte
+    Codecpar *AVCodecParameters
+    Info *AVStream_Ams21
+    Pts_wrap_bits int32
+    First_dts int64
+    Cur_dts int64
+    Last_IP_pts int64
+    Last_IP_duration int32
+    Probe_packets int32
+    Codec_info_nb_frames int32
+    Need_parsing AVStreamParseType
+    Parser *AVCodecParserContext
+    Last_in_packet_buffer *AVPacketList
+    Probe_data AVProbeData
+    Pts_buffer [MAX_REORDER_DELAY+1]int64
+    Index_entries *AVIndexEntry
+    Nb_index_entries int32
+    Index_entries_allocated_size uint32
+    Stream_identifier int32
+    Program_num int32
+    Pmt_version int32
+    Pmt_stream_idx int32
+    Interleaver_chunk_size int64
+    Interleaver_chunk_duration int64
+    Request_probe int32
+    Skip_to_keyframe int32
+    Skip_samples int32
+    Start_skip_samples int64
+    First_discard_sample int64
+    Last_discard_sample int64
+    Nb_decoded_frames int32
+    Mux_ts_offset int64
+    Pts_wrap_reference int64
+    Pts_wrap_behavior int32
+    Update_initial_durations_done int32
+    Pts_reorder_error [MAX_REORDER_DELAY+1]int64
+    Pts_reorder_error_count [MAX_REORDER_DELAY+1]uint8
+    Last_dts_for_order_check int64
+    Dts_ordered uint8
+    Dts_misordered uint8
+    Inject_global_side_data int32
+    Display_aspect_ratio AVRational
+    Internal *AVStreamInternal
+}
+
 
                          
-   
-                                                                        
-                                                     
-   
-                    
-                                                         
-                    
-                                                                 
+/**
+ * Accessors for some AVStream fields. These used to be provided for ABI
+ * compatibility, and do not need to be used anymore.
+ */
+
+func Av_stream_get_r_frame_rate(s *AVStream) AVRational {
+    _ret := C.av_stream_get_r_frame_rate((*C.struct_AVStream)(unsafe.Pointer(s)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
+}
+
+func       Av_stream_set_r_frame_rate(s *AVStream, r AVRational)  {
+    C.av_stream_set_r_frame_rate((*C.struct_AVStream)(unsafe.Pointer(s)), 
+        *(*C.struct_AVRational)(unsafe.Pointer(&r)))
+}
                         
-                    
-                                                                         
-                    
-                                                                                        
+
+func Av_stream_get_recommended_encoder_configuration(s *AVStream) string {
+    return C.GoString(C.av_stream_get_recommended_encoder_configuration(
+        (*C.struct_AVStream)(unsafe.Pointer(s))))
+}
+
+func  Av_stream_set_recommended_encoder_configuration(s *AVStream, configuration *byte)  {
+    C.av_stream_set_recommended_encoder_configuration(
+        (*C.struct_AVStream)(unsafe.Pointer(s)), 
+        (*C.char)(unsafe.Pointer(configuration)))
+}
       
       
 
 func Av_stream_get_parser(s *AVStream) *AVCodecParserContext {
     return (*AVCodecParserContext)(unsafe.Pointer(C.av_stream_get_parser(
-        (*C.AVStream)(unsafe.Pointer(s)))))
+        (*C.struct_AVStream)(unsafe.Pointer(s)))))
 }
 
 /**
@@ -698,7 +866,7 @@ func Av_stream_get_parser(s *AVStream) *AVCodecParserContext {
  * the retuned value is undefined when used with a demuxer.
  */
 func    Av_stream_get_end_pts(st *AVStream) int64 {
-    return int64(C.av_stream_get_end_pts((*C.AVStream)(unsafe.Pointer(st))))
+    return int64(C.av_stream_get_end_pts((*C.struct_AVStream)(unsafe.Pointer(st))))
 }
 
 
@@ -709,7 +877,23 @@ func    Av_stream_get_end_pts(st *AVStream) int64 {
  * version bump.
  * sizeof(AVProgram) must not be used outside libav*.
  */
-type AVProgram C.struct_AVProgram
+type AVProgram struct {
+    Id int32
+    Flags int32
+    Discard AVDiscard
+    Stream_index *uint32
+    Nb_stream_indexes uint32
+    Metadata *AVDictionary
+    Program_num int32
+    Pmt_pid int32
+    Pcr_pid int32
+    Pmt_version int32
+    Start_time int64
+    End_time int64
+    Pts_wrap_reference int64
+    Pts_wrap_behavior int32
+}
+
 
 /**< signal that no header is present
                                          (streams are added dynamically) */
@@ -719,7 +903,14 @@ type AVProgram C.struct_AVProgram
                                          network protocols (e.g. HLS), this can
                                          change dynamically at runtime. */
 
-type AVChapter C.struct_AVChapter
+type AVChapter struct {
+    Id int32
+    Time_base AVRational
+    Start int64
+    End int64
+    Metadata *AVDictionary
+}
+
 
 
 /**
@@ -733,9 +924,17 @@ type AVOpenCallback C.AVOpenCallback
  * The duration of a video can be estimated through various ways, and this enum can be used
  * to know how the duration was estimated.
  */
-type AVDurationEstimationMethod C.enum_AVDurationEstimationMethod
+type AVDurationEstimationMethod int32
+const (
+    AVFMT_DURATION_FROM_PTS AVDurationEstimationMethod = iota
+    AVFMT_DURATION_FROM_STREAM
+    AVFMT_DURATION_FROM_BITRATE
+)
 
-type AVFormatInternal C.struct_AVFormatInternal
+
+type AVFormatInternal struct {
+}
+
 
 /**
  * Format I/O context.
@@ -751,46 +950,173 @@ type AVFormatInternal C.struct_AVFormatInternal
  * The AVOption/command line parameter names differ in some cases from the C
  * structure field names for historic reasons or brevity.
  */
+type AVFormatContext struct {
+    Av_class *AVClass
+    Iformat *AVInputFormat
+    Oformat *AVOutputFormat
+    Priv_data unsafe.Pointer
+    Pb *AVIOContext
+    Ctx_flags int32
+    Nb_streams uint32
+    Streams **AVStream
+    Filename [1024]byte
+    Url *byte
+    Start_time int64
+    Duration int64
+    Bit_rate int64
+    Packet_size uint32
+    Max_delay int32
+    Flags int32
+    Probesize int64
+    Max_analyze_duration int64
+    Key *uint8
+    Keylen int32
+    Nb_programs uint32
+    Programs **AVProgram
+    Video_codec_id AVCodecID
+    Audio_codec_id AVCodecID
+    Subtitle_codec_id AVCodecID
+    Max_index_size uint32
+    Max_picture_buffer uint32
+    Nb_chapters uint32
+    Chapters **AVChapter
+    Metadata *AVDictionary
+    Start_time_realtime int64
+    Fps_probe_size int32
+    Error_recognition int32
+    Interrupt_callback AVIOInterruptCB
+    Debug int32
+    Max_interleave_delta int64
+    Strict_std_compliance int32
+    Event_flags int32
+    Max_ts_probe int32
+    Avoid_negative_ts int32
+    Ts_id int32
+    Audio_preload int32
+    Max_chunk_duration int32
+    Max_chunk_size int32
+    Use_wallclock_as_timestamps int32
+    Avio_flags int32
+    Duration_estimation_method AVDurationEstimationMethod
+    Skip_initial_bytes int64
+    Correct_ts_overflow uint32
+    Seek2any int32
+    Flush_packets int32
+    Probe_score int32
+    Format_probesize int32
+    Codec_whitelist *byte
+    Format_whitelist *byte
+    Internal *AVFormatInternal
+    Io_repositioned int32
+    Video_codec *AVCodec
+    Audio_codec *AVCodec
+    Subtitle_codec *AVCodec
+    Data_codec *AVCodec
+    Metadata_header_padding int32
+    Opaque unsafe.Pointer
+    Control_message_cb av_format_control_message
+    Output_ts_offset int64
+    Dump_separator *uint8
+    Data_codec_id AVCodecID
+    Open_cb uintptr
+    Protocol_whitelist *byte
+    Io_open uintptr
+    Io_close uintptr
+    Protocol_blacklist *byte
+    Max_streams int32
+    Skip_estimate_duration_from_pts int32
+}
 
 
                          
-   
-                                                                               
-                                                     
-   
-                    
-                                                        
-                    
-                                                              
-                    
-                                                                    
-                    
-                                                              
-                    
-                                                                    
-                    
-                                                                 
-                    
-                                                                       
-                    
-                                                             
-                    
-                                                                   
-                    
-                                                                          
-                    
-                                                                           
-                    
-                                                         
-                    
-                                                                 
-                    
-                                                                                     
-                    
-                                                                                                   
+/**
+ * Accessors for some AVFormatContext fields. These used to be provided for ABI
+ * compatibility, and do not need to be used anymore.
+ */
+
+func Av_format_get_probe_score(s *AVFormatContext) int32 {
+    return int32(C.av_format_get_probe_score(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
+}
+
+func  Av_format_get_video_codec(s *AVFormatContext) *AVCodec {
+    return (*AVCodec)(unsafe.Pointer(C.av_format_get_video_codec(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))))
+}
+
+func      Av_format_set_video_codec(s *AVFormatContext, c *AVCodec)  {
+    C.av_format_set_video_codec((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVCodec)(unsafe.Pointer(c)))
+}
+
+func  Av_format_get_audio_codec(s *AVFormatContext) *AVCodec {
+    return (*AVCodec)(unsafe.Pointer(C.av_format_get_audio_codec(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))))
+}
+
+func      Av_format_set_audio_codec(s *AVFormatContext, c *AVCodec)  {
+    C.av_format_set_audio_codec((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVCodec)(unsafe.Pointer(c)))
+}
+
+func  Av_format_get_subtitle_codec(s *AVFormatContext) *AVCodec {
+    return (*AVCodec)(unsafe.Pointer(C.av_format_get_subtitle_codec(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))))
+}
+
+func      Av_format_set_subtitle_codec(s *AVFormatContext, c *AVCodec)  {
+    C.av_format_set_subtitle_codec((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVCodec)(unsafe.Pointer(c)))
+}
+
+func  Av_format_get_data_codec(s *AVFormatContext) *AVCodec {
+    return (*AVCodec)(unsafe.Pointer(C.av_format_get_data_codec(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))))
+}
+
+func      Av_format_set_data_codec(s *AVFormatContext, c *AVCodec)  {
+    C.av_format_set_data_codec((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVCodec)(unsafe.Pointer(c)))
+}
+
+func       Av_format_get_metadata_header_padding(s *AVFormatContext) int32 {
+    return int32(C.av_format_get_metadata_header_padding(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
+}
+
+func      Av_format_set_metadata_header_padding(s *AVFormatContext, c int32)  {
+    C.av_format_set_metadata_header_padding(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(c))
+}
+
+func     Av_format_get_opaque(s *AVFormatContext) unsafe.Pointer {
+    return (unsafe.Pointer)(unsafe.Pointer(C.av_format_get_opaque(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))))
+}
+
+func      Av_format_set_opaque(s *AVFormatContext, opaque unsafe.Pointer)  {
+    C.av_format_set_opaque((*C.struct_AVFormatContext)(unsafe.Pointer(s)), opaque)
+}
+
+func Av_format_get_control_message_cb(s *AVFormatContext) av_format_control_message {
+    return av_format_control_message(C.av_format_get_control_message_cb(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
+}
+
+func      Av_format_set_control_message_cb(s *AVFormatContext, callback av_format_control_message)  {
+    C.av_format_set_control_message_cb(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        C.av_format_control_message(callback))
+}
                              
-                                                                                    
-                                                                                             
+ func Av_format_get_open_cb(s *AVFormatContext) AVOpenCallback {
+    return AVOpenCallback(C.av_format_get_open_cb(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
+}
+ func Av_format_set_open_cb(s *AVFormatContext, callback AVOpenCallback)  {
+    C.av_format_set_open_cb((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        C.AVOpenCallback(callback))
+}
       
       
 
@@ -799,7 +1125,8 @@ type AVFormatInternal C.struct_AVFormatInternal
  * of each stream as well as after any subsequent seek.
  */
 func Av_format_inject_global_side_data(s *AVFormatContext)  {
-    C.av_format_inject_global_side_data((*C.AVFormatContext)(unsafe.Pointer(s)))
+    C.av_format_inject_global_side_data(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))
 }
 
 /**
@@ -809,10 +1136,14 @@ func Av_format_inject_global_side_data(s *AVFormatContext)  {
  */
 func Av_fmt_ctx_get_duration_estimation_method(ctx *AVFormatContext) AVDurationEstimationMethod {
     return AVDurationEstimationMethod(C.av_fmt_ctx_get_duration_estimation_method(
-        (*C.AVFormatContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(ctx))))
 }
 
-type AVPacketList C.struct_AVPacketList
+type AVPacketList struct {
+    Pkt AVPacket
+    Next *AVPacketList
+}
+
 
 
 /**
@@ -846,21 +1177,27 @@ func Avformat_license() string {
 }
 
                
-   
-                                                                   
-                                                                   
-                                             
-  
-                                  
-                                   
-   
-                    
-                           
+/**
+ * Initialize libavformat and register all the muxers, demuxers and
+ * protocols. If you do not call this function, then you can select
+ * exactly which formats you want to support.
+ *
+ * @see av_register_input_format()
+ * @see av_register_output_format()
+ */
 
-                    
-                                                     
-                    
-                                                       
+func Av_register_all()  {
+    C.av_register_all()
+}
+
+
+func Av_register_input_format(format *AVInputFormat)  {
+    C.av_register_input_format((*C.struct_AVInputFormat)(unsafe.Pointer(format)))
+}
+
+func Av_register_output_format(format *AVOutputFormat)  {
+    C.av_register_output_format((*C.struct_AVOutputFormat)(unsafe.Pointer(format)))
+}
       
 
 /**
@@ -890,21 +1227,27 @@ func Avformat_network_deinit() int32 {
 }
 
                
-   
-                                                           
-                                                                     
-                                
-   
-                    
-                                                         
+/**
+ * If f is NULL, returns the first registered input format,
+ * if f is non-NULL, returns the next registered input format after f
+ * or NULL if f is the last one.
+ */
 
-   
-                                                            
-                                                                      
-                                
-   
-                    
-                                                         
+func  Av_iformat_next(f *AVInputFormat) *AVInputFormat {
+    return (*AVInputFormat)(unsafe.Pointer(C.av_iformat_next(
+        (*C.struct_AVInputFormat)(unsafe.Pointer(f)))))
+}
+
+/**
+ * If f is NULL, returns the first registered output format,
+ * if f is non-NULL, returns the next registered output format after f
+ * or NULL if f is the last one.
+ */
+
+func Av_oformat_next(f *AVOutputFormat) *AVOutputFormat {
+    return (*AVOutputFormat)(unsafe.Pointer(C.av_oformat_next(
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(f)))))
+}
       
 
 /**
@@ -947,7 +1290,7 @@ func Avformat_alloc_context() *AVFormatContext {
  * @param s context to free
  */
 func Avformat_free_context(s *AVFormatContext)  {
-    C.avformat_free_context((*C.AVFormatContext)(unsafe.Pointer(s)))
+    C.avformat_free_context((*C.struct_AVFormatContext)(unsafe.Pointer(s)))
 }
 
 /**
@@ -981,7 +1324,8 @@ func Avformat_get_class() *AVClass {
  */
 func Avformat_new_stream(s *AVFormatContext, c *AVCodec) *AVStream {
     return (*AVStream)(unsafe.Pointer(C.avformat_new_stream(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), (*C.AVCodec)(unsafe.Pointer(c)))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVCodec)(unsafe.Pointer(c)))))
 }
 
 /**
@@ -998,7 +1342,7 @@ func Avformat_new_stream(s *AVFormatContext, c *AVCodec) *AVStream {
  */
 func Av_stream_add_side_data(st *AVStream, typex AVPacketSideDataType,
                             data *uint8, size uint64) int32 {
-    return int32(C.av_stream_add_side_data((*C.AVStream)(unsafe.Pointer(st)), 
+    return int32(C.av_stream_add_side_data((*C.struct_AVStream)(unsafe.Pointer(st)), 
         C.enum_AVPacketSideDataType(typex), (*C.uchar)(unsafe.Pointer(data)), 
         C.ulonglong(size)))
 }
@@ -1014,7 +1358,7 @@ func Av_stream_add_side_data(st *AVStream, typex AVPacketSideDataType,
 func Av_stream_new_side_data(stream *AVStream,
                                  typex AVPacketSideDataType, size int32) *uint8 {
     return (*uint8)(unsafe.Pointer(C.av_stream_new_side_data(
-        (*C.AVStream)(unsafe.Pointer(stream)), 
+        (*C.struct_AVStream)(unsafe.Pointer(stream)), 
         C.enum_AVPacketSideDataType(typex), C.int(size))))
 }
 /**
@@ -1028,13 +1372,13 @@ func Av_stream_new_side_data(stream *AVStream,
 func Av_stream_get_side_data(stream *AVStream,
                                  typex AVPacketSideDataType, size *int32) *uint8 {
     return (*uint8)(unsafe.Pointer(C.av_stream_get_side_data(
-        (*C.AVStream)(unsafe.Pointer(stream)), 
+        (*C.struct_AVStream)(unsafe.Pointer(stream)), 
         C.enum_AVPacketSideDataType(typex), (*C.int)(unsafe.Pointer(size)))))
 }
 
 func Av_new_program(s *AVFormatContext, id int32) *AVProgram {
-    return (*AVProgram)(unsafe.Pointer(C.av_new_program((*C.AVFormatContext)(unsafe.Pointer(s)), 
-        C.int(id))))
+    return (*AVProgram)(unsafe.Pointer(C.av_new_program(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(id))))
 }
 
 /**
@@ -1061,8 +1405,8 @@ func Av_new_program(s *AVFormatContext, id int32) *AVProgram {
 func Avformat_alloc_output_context2(ctx **AVFormatContext, oformat *AVOutputFormat,
                                    format_name *byte, filename *byte) int32 {
     return int32(C.avformat_alloc_output_context2(
-        (**C.AVFormatContext)(unsafe.Pointer(ctx)), 
-        (*C.AVOutputFormat)(unsafe.Pointer(oformat)), 
+        (**C.struct_AVFormatContext)(unsafe.Pointer(ctx)), 
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(oformat)), 
         (*C.char)(unsafe.Pointer(format_name)), 
         (*C.char)(unsafe.Pointer(filename))))
 }
@@ -1089,7 +1433,7 @@ func Av_find_input_format(short_name *byte) *AVInputFormat {
  */
 func Av_probe_input_format(pd *AVProbeData, is_opened int32) *AVInputFormat {
     return (*AVInputFormat)(unsafe.Pointer(C.av_probe_input_format(
-        (*C.AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened))))
+        (*C.struct_AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened))))
 }
 
 /**
@@ -1106,7 +1450,7 @@ func Av_probe_input_format(pd *AVProbeData, is_opened int32) *AVInputFormat {
  */
 func Av_probe_input_format2(pd *AVProbeData, is_opened int32, score_max *int32) *AVInputFormat {
     return (*AVInputFormat)(unsafe.Pointer(C.av_probe_input_format2(
-        (*C.AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened), 
+        (*C.struct_AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened), 
         (*C.int)(unsafe.Pointer(score_max)))))
 }
 
@@ -1119,7 +1463,7 @@ func Av_probe_input_format2(pd *AVProbeData, is_opened int32, score_max *int32) 
  */
 func Av_probe_input_format3(pd *AVProbeData, is_opened int32, score_ret *int32) *AVInputFormat {
     return (*AVInputFormat)(unsafe.Pointer(C.av_probe_input_format3(
-        (*C.AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened), 
+        (*C.struct_AVProbeData)(unsafe.Pointer(pd)), C.int(is_opened), 
         (*C.int)(unsafe.Pointer(score_ret)))))
 }
 
@@ -1142,9 +1486,11 @@ func Av_probe_input_format3(pd *AVProbeData, is_opened int32, score_ret *int32) 
 func Av_probe_input_buffer2(pb *AVIOContext, fmt **AVInputFormat,
                            url *byte, logctx unsafe.Pointer,
                            offset uint32, max_probe_size uint32) int32 {
-    return int32(C.av_probe_input_buffer2((*C.AVIOContext)(unsafe.Pointer(pb)), 
-        (**C.AVInputFormat)(unsafe.Pointer(fmt)), (*C.char)(unsafe.Pointer(url)), 
-        logctx, C.uint(offset), C.uint(max_probe_size)))
+    return int32(C.av_probe_input_buffer2(
+        (*C.struct_AVIOContext)(unsafe.Pointer(pb)), 
+        (**C.struct_AVInputFormat)(unsafe.Pointer(fmt)), 
+        (*C.char)(unsafe.Pointer(url)), logctx, C.uint(offset), 
+        C.uint(max_probe_size)))
 }
 
 /**
@@ -1153,9 +1499,10 @@ func Av_probe_input_buffer2(pb *AVIOContext, fmt **AVInputFormat,
 func Av_probe_input_buffer(pb *AVIOContext, fmt **AVInputFormat,
                           url *byte, logctx unsafe.Pointer,
                           offset uint32, max_probe_size uint32) int32 {
-    return int32(C.av_probe_input_buffer((*C.AVIOContext)(unsafe.Pointer(pb)), 
-        (**C.AVInputFormat)(unsafe.Pointer(fmt)), (*C.char)(unsafe.Pointer(url)), 
-        logctx, C.uint(offset), C.uint(max_probe_size)))
+    return int32(C.av_probe_input_buffer((*C.struct_AVIOContext)(unsafe.Pointer(pb)), 
+        (**C.struct_AVInputFormat)(unsafe.Pointer(fmt)), 
+        (*C.char)(unsafe.Pointer(url)), logctx, C.uint(offset), 
+        C.uint(max_probe_size)))
 }
 
 /**
@@ -1178,14 +1525,16 @@ func Av_probe_input_buffer(pb *AVIOContext, fmt **AVInputFormat,
  * @note If you want to use custom IO, preallocate the format context and set its pb field.
  */
 func Avformat_open_input(ps **AVFormatContext, url *byte, fmt *AVInputFormat, options **AVDictionary) int32 {
-    return int32(C.avformat_open_input((**C.AVFormatContext)(unsafe.Pointer(ps)), 
-        (*C.char)(unsafe.Pointer(url)), (*C.AVInputFormat)(unsafe.Pointer(fmt)), 
-        (**C.AVDictionary)(unsafe.Pointer(options))))
+    return int32(C.avformat_open_input(
+        (**C.struct_AVFormatContext)(unsafe.Pointer(ps)), 
+        (*C.char)(unsafe.Pointer(url)), 
+        (*C.struct_AVInputFormat)(unsafe.Pointer(fmt)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(options))))
 }
 
 
 func Av_demuxer_open(ic *AVFormatContext) int32 {
-    return int32(C.av_demuxer_open((*C.AVFormatContext)(unsafe.Pointer(ic))))
+    return int32(C.av_demuxer_open((*C.struct_AVFormatContext)(unsafe.Pointer(ic))))
 }
 
 /**
@@ -1211,8 +1560,8 @@ func Av_demuxer_open(ic *AVFormatContext) int32 {
  */
 func Avformat_find_stream_info(ic *AVFormatContext, options **AVDictionary) int32 {
     return int32(C.avformat_find_stream_info(
-        (*C.AVFormatContext)(unsafe.Pointer(ic)), 
-        (**C.AVDictionary)(unsafe.Pointer(options))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(ic)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(options))))
 }
 
 /**
@@ -1227,12 +1576,12 @@ func Avformat_find_stream_info(ic *AVFormatContext, options **AVDictionary) int3
  */
 func Av_find_program_from_stream(ic *AVFormatContext, last *AVProgram, s int32) *AVProgram {
     return (*AVProgram)(unsafe.Pointer(C.av_find_program_from_stream(
-        (*C.AVFormatContext)(unsafe.Pointer(ic)), 
-        (*C.AVProgram)(unsafe.Pointer(last)), C.int(s))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(ic)), 
+        (*C.struct_AVProgram)(unsafe.Pointer(last)), C.int(s))))
 }
 
 func Av_program_add_stream_index(ac *AVFormatContext, progid int32, idx uint32)  {
-    C.av_program_add_stream_index((*C.AVFormatContext)(unsafe.Pointer(ac)), 
+    C.av_program_add_stream_index((*C.struct_AVFormatContext)(unsafe.Pointer(ac)), 
         C.int(progid), C.uint(idx))
 }
 
@@ -1266,9 +1615,10 @@ func Av_find_best_stream(ic *AVFormatContext,
                         related_stream int32,
                         decoder_ret **AVCodec,
                         flags int32) int32 {
-    return int32(C.av_find_best_stream((*C.AVFormatContext)(unsafe.Pointer(ic)), 
+    return int32(C.av_find_best_stream(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(ic)), 
         C.enum_AVMediaType(typex), C.int(wanted_stream_nb), 
-        C.int(related_stream), (**C.AVCodec)(unsafe.Pointer(decoder_ret)), 
+        C.int(related_stream), (**C.struct_AVCodec)(unsafe.Pointer(decoder_ret)), 
         C.int(flags)))
 }
 
@@ -1297,8 +1647,8 @@ func Av_find_best_stream(ic *AVFormatContext,
  * @return 0 if OK, < 0 on error or end of file
  */
 func Av_read_frame(s *AVFormatContext, pkt *AVPacket) int32 {
-    return int32(C.av_read_frame((*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (*C.AVPacket)(unsafe.Pointer(pkt))))
+    return int32(C.av_read_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
 }
 
 /**
@@ -1316,7 +1666,7 @@ func Av_read_frame(s *AVFormatContext, pkt *AVPacket) int32 {
  */
 func Av_seek_frame(s *AVFormatContext, stream_index int32, timestamp int64,
                   flags int32) int32 {
-    return int32(C.av_seek_frame((*C.AVFormatContext)(unsafe.Pointer(s)), 
+    return int32(C.av_seek_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
         C.int(stream_index), C.longlong(timestamp), C.int(flags)))
 }
 
@@ -1349,7 +1699,7 @@ func Av_seek_frame(s *AVFormatContext, stream_index int32, timestamp int64,
  *       ABI compatibility yet!
  */
 func Avformat_seek_file(s *AVFormatContext, stream_index int32, min_ts int64, ts int64, max_ts int64, flags int32) int32 {
-    return int32(C.avformat_seek_file((*C.AVFormatContext)(unsafe.Pointer(s)), 
+    return int32(C.avformat_seek_file((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
         C.int(stream_index), C.longlong(min_ts), C.longlong(ts), 
         C.longlong(max_ts), C.int(flags)))
 }
@@ -1371,7 +1721,7 @@ func Avformat_seek_file(s *AVFormatContext, stream_index int32, min_ts int64, ts
  * @return >=0 on success, error code otherwise
  */
 func Avformat_flush(s *AVFormatContext) int32 {
-    return int32(C.avformat_flush((*C.AVFormatContext)(unsafe.Pointer(s))))
+    return int32(C.avformat_flush((*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
 /**
@@ -1379,7 +1729,7 @@ func Avformat_flush(s *AVFormatContext) int32 {
  * current position.
  */
 func Av_read_play(s *AVFormatContext) int32 {
-    return int32(C.av_read_play((*C.AVFormatContext)(unsafe.Pointer(s))))
+    return int32(C.av_read_play((*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
 /**
@@ -1388,7 +1738,7 @@ func Av_read_play(s *AVFormatContext) int32 {
  * Use av_read_play() to resume it.
  */
 func Av_read_pause(s *AVFormatContext) int32 {
-    return int32(C.av_read_pause((*C.AVFormatContext)(unsafe.Pointer(s))))
+    return int32(C.av_read_pause((*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
 /**
@@ -1396,7 +1746,7 @@ func Av_read_pause(s *AVFormatContext) int32 {
  * and set *s to NULL.
  */
 func Avformat_close_input(s **AVFormatContext)  {
-    C.avformat_close_input((**C.AVFormatContext)(unsafe.Pointer(s)))
+    C.avformat_close_input((**C.struct_AVFormatContext)(unsafe.Pointer(s)))
 }
 /**
  * @}
@@ -1433,8 +1783,9 @@ func Avformat_close_input(s **AVFormatContext)  {
  * @see av_opt_find, av_dict_set, avio_open, av_oformat_next, avformat_init_output.
  */
 func Avformat_write_header(s *AVFormatContext, options **AVDictionary) int32 {
-    return int32(C.avformat_write_header((*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (**C.AVDictionary)(unsafe.Pointer(options))))
+    return int32(C.avformat_write_header(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(options))))
 }
 
 /**
@@ -1457,8 +1808,9 @@ func Avformat_write_header(s *AVFormatContext, options **AVDictionary) int32 {
  * @see av_opt_find, av_dict_set, avio_open, av_oformat_next, avformat_write_header.
  */
 func Avformat_init_output(s *AVFormatContext, options **AVDictionary) int32 {
-    return int32(C.avformat_init_output((*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (**C.AVDictionary)(unsafe.Pointer(options))))
+    return int32(C.avformat_init_output(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(options))))
 }
 
 /**
@@ -1499,8 +1851,8 @@ func Avformat_init_output(s *AVFormatContext, options **AVDictionary) int32 {
  * @see av_interleaved_write_frame()
  */
 func Av_write_frame(s *AVFormatContext, pkt *AVPacket) int32 {
-    return int32(C.av_write_frame((*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (*C.AVPacket)(unsafe.Pointer(pkt))))
+    return int32(C.av_write_frame((*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
 }
 
 /**
@@ -1548,8 +1900,8 @@ func Av_write_frame(s *AVFormatContext, pkt *AVPacket) int32 {
  */
 func Av_interleaved_write_frame(s *AVFormatContext, pkt *AVPacket) int32 {
     return int32(C.av_interleaved_write_frame(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (*C.AVPacket)(unsafe.Pointer(pkt))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt))))
 }
 
 /**
@@ -1563,8 +1915,8 @@ func Av_interleaved_write_frame(s *AVFormatContext, pkt *AVPacket) int32 {
 func Av_write_uncoded_frame(s *AVFormatContext, stream_index int32,
                            frame *AVFrame) int32 {
     return int32(C.av_write_uncoded_frame(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index), 
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 /**
@@ -1586,8 +1938,8 @@ func Av_write_uncoded_frame(s *AVFormatContext, stream_index int32,
 func Av_interleaved_write_uncoded_frame(s *AVFormatContext, stream_index int32,
                                        frame *AVFrame) int32 {
     return int32(C.av_interleaved_write_uncoded_frame(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index), 
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 /**
@@ -1598,7 +1950,7 @@ func Av_interleaved_write_uncoded_frame(s *AVFormatContext, stream_index int32,
  */
 func Av_write_uncoded_frame_query(s *AVFormatContext, stream_index int32) int32 {
     return int32(C.av_write_uncoded_frame_query(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index)))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), C.int(stream_index)))
 }
 
 /**
@@ -1611,7 +1963,7 @@ func Av_write_uncoded_frame_query(s *AVFormatContext, stream_index int32) int32 
  * @return 0 if OK, AVERROR_xxx on error
  */
 func Av_write_trailer(s *AVFormatContext) int32 {
-    return int32(C.av_write_trailer((*C.AVFormatContext)(unsafe.Pointer(s))))
+    return int32(C.av_write_trailer((*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
 /**
@@ -1641,7 +1993,8 @@ func Av_guess_format(short_name *byte,
 func Av_guess_codec(fmt *AVOutputFormat, short_name *byte,
                             filename *byte, mime_type *byte,
                             typex AVMediaType) AVCodecID {
-    return AVCodecID(C.av_guess_codec((*C.AVOutputFormat)(unsafe.Pointer(fmt)), 
+    return AVCodecID(C.av_guess_codec(
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(fmt)), 
         (*C.char)(unsafe.Pointer(short_name)), 
         (*C.char)(unsafe.Pointer(filename)), 
         (*C.char)(unsafe.Pointer(mime_type)), C.enum_AVMediaType(typex)))
@@ -1723,8 +2076,8 @@ func Av_hex_dump_log(avcl unsafe.Pointer, level int32, buf *uint8, size int32)  
  * @param st AVStream that the packet belongs to
  */
 func Av_pkt_dump2(f *C.FILE, pkt *AVPacket, dump_payload int32, st *AVStream)  {
-    C.av_pkt_dump2(f, (*C.AVPacket)(unsafe.Pointer(pkt)), C.int(dump_payload), 
-        (*C.AVStream)(unsafe.Pointer(st)))
+    C.av_pkt_dump2(f, (*C.struct_AVPacket)(unsafe.Pointer(pkt)), C.int(dump_payload), 
+        (*C.struct_AVStream)(unsafe.Pointer(st)))
 }
 
 
@@ -1741,8 +2094,8 @@ func Av_pkt_dump2(f *C.FILE, pkt *AVPacket, dump_payload int32, st *AVStream)  {
  */
 func Av_pkt_dump_log2(avcl unsafe.Pointer, level int32, pkt *AVPacket, dump_payload int32,
                       st *AVStream)  {
-    C.av_pkt_dump_log2(avcl, C.int(level), (*C.AVPacket)(unsafe.Pointer(pkt)), 
-        C.int(dump_payload), (*C.AVStream)(unsafe.Pointer(st)))
+    C.av_pkt_dump_log2(avcl, C.int(level), (*C.struct_AVPacket)(unsafe.Pointer(pkt)), 
+        C.int(dump_payload), (*C.struct_AVStream)(unsafe.Pointer(st)))
 }
 
 /**
@@ -1754,8 +2107,8 @@ func Av_pkt_dump_log2(avcl unsafe.Pointer, level int32, pkt *AVPacket, dump_payl
  * @param tag  codec tag to match to a codec ID
  */
 func Av_codec_get_id(tags **AVCodecTag, tag uint32) AVCodecID {
-    return AVCodecID(C.av_codec_get_id(
-        (**C.struct_AVCodecTag)(unsafe.Pointer(tags)), C.uint(tag)))
+    return AVCodecID(C.av_codec_get_id((**C.struct_AVCodecTag)(unsafe.Pointer(tags)), 
+        C.uint(tag)))
 }
 
 /**
@@ -1767,8 +2120,8 @@ func Av_codec_get_id(tags **AVCodecTag, tag uint32) AVCodecID {
  * @param id   codec ID to match to a codec tag
  */
 func Av_codec_get_tag(tags **AVCodecTag, id AVCodecID) uint32 {
-    return uint32(C.av_codec_get_tag(
-        (**C.struct_AVCodecTag)(unsafe.Pointer(tags)), C.enum_AVCodecID(id)))
+    return uint32(C.av_codec_get_tag((**C.struct_AVCodecTag)(unsafe.Pointer(tags)), 
+        C.enum_AVCodecID(id)))
 }
 
 /**
@@ -1782,14 +2135,13 @@ func Av_codec_get_tag(tags **AVCodecTag, id AVCodecID) uint32 {
  */
 func Av_codec_get_tag2(tags **AVCodecTag, id AVCodecID,
                       tag *uint32) int32 {
-    return int32(C.av_codec_get_tag2(
-        (**C.struct_AVCodecTag)(unsafe.Pointer(tags)), C.enum_AVCodecID(id), 
-        (*C.uint)(unsafe.Pointer(tag))))
+    return int32(C.av_codec_get_tag2((**C.struct_AVCodecTag)(unsafe.Pointer(tags)), 
+        C.enum_AVCodecID(id), (*C.uint)(unsafe.Pointer(tag))))
 }
 
 func Av_find_default_stream_index(s *AVFormatContext) int32 {
     return int32(C.av_find_default_stream_index(
-        (*C.AVFormatContext)(unsafe.Pointer(s))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
 /**
@@ -1804,8 +2156,9 @@ func Av_find_default_stream_index(s *AVFormatContext) int32 {
  * @return < 0 if no such timestamp could be found
  */
 func Av_index_search_timestamp(st *AVStream, timestamp int64, flags int32) int32 {
-    return int32(C.av_index_search_timestamp((*C.AVStream)(unsafe.Pointer(st)), 
-        C.longlong(timestamp), C.int(flags)))
+    return int32(C.av_index_search_timestamp(
+        (*C.struct_AVStream)(unsafe.Pointer(st)), C.longlong(timestamp), 
+        C.int(flags)))
 }
 
 /**
@@ -1816,7 +2169,7 @@ func Av_index_search_timestamp(st *AVStream, timestamp int64, flags int32) int32
  */
 func Av_add_index_entry(st *AVStream, pos int64, timestamp int64,
                        size int32, distance int32, flags int32) int32 {
-    return int32(C.av_add_index_entry((*C.AVStream)(unsafe.Pointer(st)), 
+    return int32(C.av_add_index_entry((*C.struct_AVStream)(unsafe.Pointer(st)), 
         C.longlong(pos), C.longlong(timestamp), C.int(size), C.int(distance), 
         C.int(flags)))
 }
@@ -1869,7 +2222,7 @@ func Av_dump_format(ic *AVFormatContext,
                     index int32,
                     url *byte,
                     is_output int32)  {
-    C.av_dump_format((*C.AVFormatContext)(unsafe.Pointer(ic)), C.int(index), 
+    C.av_dump_format((*C.struct_AVFormatContext)(unsafe.Pointer(ic)), C.int(index), 
         (*C.char)(unsafe.Pointer(url)), C.int(is_output))
 }
 
@@ -1929,9 +2282,10 @@ func Av_filename_number_test(filename *byte) int32 {
  * @param size the size of the buffer
  * @return 0 if OK, AVERROR_xxx on error
  */
-func Av_sdp_create(ac[] *AVFormatContext, n_files int32, buf *byte, size int32) int32 {
-    return int32(C.av_sdp_create((**C.AVFormatContext)(unsafe.Pointer(&ac[0])), 
-        C.int(n_files), (*C.char)(unsafe.Pointer(buf)), C.int(size)))
+func Av_sdp_create(ac []*AVFormatContext, n_files int32, buf *byte, size int32) int32 {
+    return int32(C.av_sdp_create(
+        (**C.struct_AVFormatContext)(unsafe.Pointer(&ac[0])), C.int(n_files), 
+        (*C.char)(unsafe.Pointer(buf)), C.int(size)))
 }
 
 /**
@@ -1959,8 +2313,8 @@ func Av_match_ext(filename *byte, extensions *byte) int32 {
 func Avformat_query_codec(ofmt *AVOutputFormat, codec_id AVCodecID,
                          std_compliance int32) int32 {
     return int32(C.avformat_query_codec(
-        (*C.AVOutputFormat)(unsafe.Pointer(ofmt)), C.enum_AVCodecID(codec_id), 
-        C.int(std_compliance)))
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(ofmt)), 
+        C.enum_AVCodecID(codec_id), C.int(std_compliance)))
 }
 
 /**
@@ -2022,10 +2376,11 @@ func Avformat_get_mov_audio_tags() *AVCodecTag {
  * @return the guessed (valid) sample_aspect_ratio, 0/1 if no idea
  */
 func Av_guess_sample_aspect_ratio(format *AVFormatContext, stream *AVStream, frame *AVFrame) AVRational {
-    return AVRational(C.av_guess_sample_aspect_ratio(
-        (*C.AVFormatContext)(unsafe.Pointer(format)), 
-        (*C.AVStream)(unsafe.Pointer(stream)), 
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+    _ret := C.av_guess_sample_aspect_ratio(
+        (*C.struct_AVFormatContext)(unsafe.Pointer(format)), 
+        (*C.struct_AVStream)(unsafe.Pointer(stream)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 
 /**
@@ -2037,10 +2392,10 @@ func Av_guess_sample_aspect_ratio(format *AVFormatContext, stream *AVStream, fra
  * @return the guessed (valid) frame rate, 0/1 if no idea
  */
 func Av_guess_frame_rate(ctx *AVFormatContext, stream *AVStream, frame *AVFrame) AVRational {
-    return AVRational(C.av_guess_frame_rate(
-        (*C.AVFormatContext)(unsafe.Pointer(ctx)), 
-        (*C.AVStream)(unsafe.Pointer(stream)), 
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+    _ret := C.av_guess_frame_rate((*C.struct_AVFormatContext)(unsafe.Pointer(ctx)), 
+        (*C.struct_AVStream)(unsafe.Pointer(stream)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 
 /**
@@ -2059,33 +2414,46 @@ func Av_guess_frame_rate(ctx *AVFormatContext, stream *AVStream, frame *AVFrame)
 func Avformat_match_stream_specifier(s *AVFormatContext, st *AVStream,
                                     spec *byte) int32 {
     return int32(C.avformat_match_stream_specifier(
-        (*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (*C.AVStream)(unsafe.Pointer(st)), (*C.char)(unsafe.Pointer(spec))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (*C.struct_AVStream)(unsafe.Pointer(st)), 
+        (*C.char)(unsafe.Pointer(spec))))
 }
 
 func Avformat_queue_attached_pictures(s *AVFormatContext) int32 {
     return int32(C.avformat_queue_attached_pictures(
-        (*C.AVFormatContext)(unsafe.Pointer(s))))
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s))))
 }
 
                   
-   
-                                                 
-  
-                                                        
-                                                                          
-                                                                          
-                                      
-                                                         
-                           
-                                   
-   
-                    
-                                                                    
-                                                               
+/**
+ * Apply a list of bitstream filters to a packet.
+ *
+ * @param codec AVCodecContext, usually from an AVStream
+ * @param pkt the packet to apply filters to. If, on success, the returned
+ *        packet has size == 0 and side_data_elems == 0, it indicates that
+ *        the packet should be dropped
+ * @param bsfc a NULL-terminated list of filters to apply
+ * @return  >=0 on success;
+ *          AVERROR code on failure
+ */
+
+func Av_apply_bitstream_filters(codec *AVCodecContext, pkt *AVPacket,
+                               bsfc *AVBitStreamFilterContext) int32 {
+    return int32(C.av_apply_bitstream_filters(
+        (*C.struct_AVCodecContext)(unsafe.Pointer(codec)), 
+        (*C.struct_AVPacket)(unsafe.Pointer(pkt)), 
+        (*C.struct_AVBitStreamFilterContext)(unsafe.Pointer(bsfc))))
+}
       
 
-type AVTimebaseSource C.enum_AVTimebaseSource
+type AVTimebaseSource int32
+const (
+    AVFMT_TBCF_AUTO AVTimebaseSource = -1 + iota
+    AVFMT_TBCF_DECODER
+    AVFMT_TBCF_DEMUXER
+    AVFMT_TBCF_R_FRAMERATE
+)
+
 
 /**
  * Transfer internal timing information from one stream to another.
@@ -2101,8 +2469,9 @@ func Avformat_transfer_internal_stream_timing_info(ofmt *AVOutputFormat,
                                                   ost *AVStream, ist *AVStream,
                                                   copy_tb AVTimebaseSource) int32 {
     return int32(C.avformat_transfer_internal_stream_timing_info(
-        (*C.AVOutputFormat)(unsafe.Pointer(ofmt)), 
-        (*C.AVStream)(unsafe.Pointer(ost)), (*C.AVStream)(unsafe.Pointer(ist)), 
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(ofmt)), 
+        (*C.struct_AVStream)(unsafe.Pointer(ost)), 
+        (*C.struct_AVStream)(unsafe.Pointer(ist)), 
         C.enum_AVTimebaseSource(copy_tb)))
 }
 
@@ -2112,8 +2481,8 @@ func Avformat_transfer_internal_stream_timing_info(ofmt *AVOutputFormat,
  * @param st  input stream to extract the timebase from
  */
 func Av_stream_get_codec_timebase(st *AVStream) AVRational {
-    return AVRational(C.av_stream_get_codec_timebase(
-        (*C.AVStream)(unsafe.Pointer(st))))
+    _ret := C.av_stream_get_codec_timebase((*C.struct_AVStream)(unsafe.Pointer(st)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 
 /**

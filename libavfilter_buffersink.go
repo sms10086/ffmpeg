@@ -33,6 +33,7 @@ const AV_BUFFERSINK_FLAG_PEEK = 1
 const AV_BUFFERSINK_FLAG_NO_REQUEST = 2
 
 
+
                              
                              
 
@@ -62,8 +63,8 @@ const AV_BUFFERSINK_FLAG_NO_REQUEST = 2
  */
 func Av_buffersink_get_frame_flags(ctx *AVFilterContext, frame *AVFrame, flags int32) int32 {
     return int32(C.av_buffersink_get_frame_flags(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx)), 
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.int(flags)))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(flags)))
 }
 
 /**
@@ -83,7 +84,10 @@ func Av_buffersink_get_frame_flags(ctx *AVFilterContext, frame *AVFrame, flags i
 /**
  * Struct to use for initializing a buffersink context.
  */
-type AVBufferSinkParams C.struct_AVBufferSinkParams
+type AVBufferSinkParams struct {
+    Pixel_fmts *AVPixelFormat
+}
+
 
 /**
  * Create an AVBufferSinkParams structure.
@@ -97,7 +101,14 @@ func Av_buffersink_params_alloc() *AVBufferSinkParams {
 /**
  * Struct to use for initializing an abuffersink context.
  */
-type AVABufferSinkParams C.struct_AVABufferSinkParams
+type AVABufferSinkParams struct {
+    Sample_fmts *AVSampleFormat
+    Channel_layouts *int64
+    Channel_counts *int32
+    All_channel_counts int32
+    Sample_rates *int32
+}
+
 
 /**
  * Create an AVABufferSinkParams structure.
@@ -116,7 +127,7 @@ func Av_abuffersink_params_alloc() *AVABufferSinkParams {
  * not enough. The last buffer at EOF will be padded with 0.
  */
 func Av_buffersink_set_frame_size(ctx *AVFilterContext, frame_size uint32)  {
-    C.av_buffersink_set_frame_size((*C.AVFilterContext)(unsafe.Pointer(ctx)), 
+    C.av_buffersink_set_frame_size((*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
         C.unsigned(frame_size))
 }
 
@@ -128,48 +139,53 @@ func Av_buffersink_set_frame_size(ctx *AVFilterContext, frame_size uint32)  {
 
 func Av_buffersink_get_type                (ctx *AVFilterContext) AVMediaType {
     return AVMediaType(C.av_buffersink_get_type(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 func       Av_buffersink_get_time_base           (ctx *AVFilterContext) AVRational {
-    return AVRational(C.av_buffersink_get_time_base(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+    _ret := C.av_buffersink_get_time_base(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 func              Av_buffersink_get_format              (ctx *AVFilterContext) int32 {
     return int32(C.av_buffersink_get_format(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 
 func       Av_buffersink_get_frame_rate          (ctx *AVFilterContext) AVRational {
-    return AVRational(C.av_buffersink_get_frame_rate(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+    _ret := C.av_buffersink_get_frame_rate(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 func              Av_buffersink_get_w                   (ctx *AVFilterContext) int32 {
-    return int32(C.av_buffersink_get_w((*C.AVFilterContext)(unsafe.Pointer(ctx))))
+    return int32(C.av_buffersink_get_w(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 func              Av_buffersink_get_h                   (ctx *AVFilterContext) int32 {
-    return int32(C.av_buffersink_get_h((*C.AVFilterContext)(unsafe.Pointer(ctx))))
+    return int32(C.av_buffersink_get_h(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 func       Av_buffersink_get_sample_aspect_ratio (ctx *AVFilterContext) AVRational {
-    return AVRational(C.av_buffersink_get_sample_aspect_ratio(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+    _ret := C.av_buffersink_get_sample_aspect_ratio(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)))
+    return *(*AVRational)(unsafe.Pointer(&_ret))
 }
 
 func              Av_buffersink_get_channels            (ctx *AVFilterContext) int32 {
     return int32(C.av_buffersink_get_channels(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 func         Av_buffersink_get_channel_layout      (ctx *AVFilterContext) uint64 {
     return uint64(C.av_buffersink_get_channel_layout(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 func              Av_buffersink_get_sample_rate         (ctx *AVFilterContext) int32 {
     return int32(C.av_buffersink_get_sample_rate(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx))))
 }
 
 func     Av_buffersink_get_hw_frames_ctx       (ctx *AVFilterContext) *AVBufferRef {
     return (*AVBufferRef)(unsafe.Pointer(C.av_buffersink_get_hw_frames_ctx(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx)))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)))))
 }
 
 /** @} */
@@ -190,8 +206,8 @@ func     Av_buffersink_get_hw_frames_ctx       (ctx *AVFilterContext) *AVBufferR
  */
 func Av_buffersink_get_frame(ctx *AVFilterContext, frame *AVFrame) int32 {
     return int32(C.av_buffersink_get_frame(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx)), 
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 /**
@@ -213,8 +229,8 @@ func Av_buffersink_get_frame(ctx *AVFilterContext, frame *AVFrame) int32 {
  */
 func Av_buffersink_get_samples(ctx *AVFilterContext, frame *AVFrame, nb_samples int32) int32 {
     return int32(C.av_buffersink_get_samples(
-        (*C.AVFilterContext)(unsafe.Pointer(ctx)), 
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.int(nb_samples)))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(nb_samples)))
 }
 
 /**

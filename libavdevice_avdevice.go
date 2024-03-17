@@ -35,6 +35,7 @@ import (
 
 
 
+
                            
                            
 
@@ -106,7 +107,7 @@ func Avdevice_register_all()  {
  */
 func Av_input_audio_device_next(d *AVInputFormat) *AVInputFormat {
     return (*AVInputFormat)(unsafe.Pointer(C.av_input_audio_device_next(
-        (*C.AVInputFormat)(unsafe.Pointer(d)))))
+        (*C.struct_AVInputFormat)(unsafe.Pointer(d)))))
 }
 
 /**
@@ -118,7 +119,7 @@ func Av_input_audio_device_next(d *AVInputFormat) *AVInputFormat {
  */
 func Av_input_video_device_next(d *AVInputFormat) *AVInputFormat {
     return (*AVInputFormat)(unsafe.Pointer(C.av_input_video_device_next(
-        (*C.AVInputFormat)(unsafe.Pointer(d)))))
+        (*C.struct_AVInputFormat)(unsafe.Pointer(d)))))
 }
 
 /**
@@ -130,7 +131,7 @@ func Av_input_video_device_next(d *AVInputFormat) *AVInputFormat {
  */
 func Av_output_audio_device_next(d *AVOutputFormat) *AVOutputFormat {
     return (*AVOutputFormat)(unsafe.Pointer(C.av_output_audio_device_next(
-        (*C.AVOutputFormat)(unsafe.Pointer(d)))))
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(d)))))
 }
 
 /**
@@ -142,20 +143,28 @@ func Av_output_audio_device_next(d *AVOutputFormat) *AVOutputFormat {
  */
 func Av_output_video_device_next(d *AVOutputFormat) *AVOutputFormat {
     return (*AVOutputFormat)(unsafe.Pointer(C.av_output_video_device_next(
-        (*C.AVOutputFormat)(unsafe.Pointer(d)))))
+        (*C.struct_AVOutputFormat)(unsafe.Pointer(d)))))
 }
 
-type AVDeviceRect C.struct_AVDeviceRect
+type AVDeviceRect struct {
+    X int32
+    Y int32
+    Width int32
+    Height int32
+}
+
 
 /**
  * Message types used by avdevice_app_to_dev_control_message().
  */
-type AVAppToDevMessageType C.enum_AVAppToDevMessageType
+type AVAppToDevMessageType int32
+
 
 /**
  * Message types used by avdevice_dev_to_app_control_message().
  */
-type AVDevToAppMessageType C.enum_AVDevToAppMessageType
+type AVDevToAppMessageType int32
+
 
 /**
  * Send control message from application to device.
@@ -269,7 +278,22 @@ func Avdevice_dev_to_app_control_message(s *AVFormatContext,
  * It is used by devices in conjunction with av_device_capabilities AVOption table
  * to implement capabilities probing API based on AVOption API. Should not be used directly.
  */
-type AVDeviceCapabilitiesQuery C.struct_AVDeviceCapabilitiesQuery
+type AVDeviceCapabilitiesQuery struct {
+    Av_class *AVClass
+    Device_context *AVFormatContext
+    Codec AVCodecID
+    Sample_format AVSampleFormat
+    Pixel_format AVPixelFormat
+    Sample_rate int32
+    Channels int32
+    Channel_layout int64
+    Window_width int32
+    Window_height int32
+    Frame_width int32
+    Frame_height int32
+    Fps AVRational
+}
+
 
 /**
  * AVOption table used by devices to implement device capabilities API. Should not be used by a user.
@@ -296,9 +320,9 @@ type AVDeviceCapabilitiesQuery C.struct_AVDeviceCapabilitiesQuery
 func Avdevice_capabilities_create(caps **AVDeviceCapabilitiesQuery, s *AVFormatContext,
                                  device_options **AVDictionary) int32 {
     return int32(C.avdevice_capabilities_create(
-        (**C.AVDeviceCapabilitiesQuery)(unsafe.Pointer(caps)), 
-        (*C.AVFormatContext)(unsafe.Pointer(s)), 
-        (**C.AVDictionary)(unsafe.Pointer(device_options))))
+        (**C.struct_AVDeviceCapabilitiesQuery)(unsafe.Pointer(caps)), 
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(device_options))))
 }
 
 /**
@@ -309,19 +333,28 @@ func Avdevice_capabilities_create(caps **AVDeviceCapabilitiesQuery, s *AVFormatC
  */
 func Avdevice_capabilities_free(caps **AVDeviceCapabilitiesQuery, s *AVFormatContext)  {
     C.avdevice_capabilities_free(
-        (**C.AVDeviceCapabilitiesQuery)(unsafe.Pointer(caps)), 
-        (*C.AVFormatContext)(unsafe.Pointer(s)))
+        (**C.struct_AVDeviceCapabilitiesQuery)(unsafe.Pointer(caps)), 
+        (*C.struct_AVFormatContext)(unsafe.Pointer(s)))
 }
 
 /**
  * Structure describes basic parameters of the device.
  */
-type AVDeviceInfo C.struct_AVDeviceInfo
+type AVDeviceInfo struct {
+    Device_name *byte
+    Device_description *byte
+}
+
 
 /**
  * List of devices.
  */
-type AVDeviceInfoList C.struct_AVDeviceInfoList
+type AVDeviceInfoList struct {
+    Devices **AVDeviceInfo
+    Nb_devices int32
+    Default_device int32
+}
+
 
 /**
  * List devices.
@@ -339,7 +372,7 @@ type AVDeviceInfoList C.struct_AVDeviceInfoList
 func Avdevice_list_devices(s *AVFormatContext, device_list **AVDeviceInfoList) int32 {
     return int32(C.avdevice_list_devices(
         (*C.struct_AVFormatContext)(unsafe.Pointer(s)), 
-        (**C.AVDeviceInfoList)(unsafe.Pointer(device_list))))
+        (**C.struct_AVDeviceInfoList)(unsafe.Pointer(device_list))))
 }
 
 /**
@@ -349,7 +382,7 @@ func Avdevice_list_devices(s *AVFormatContext, device_list **AVDeviceInfoList) i
  */
 func Avdevice_free_list_devices(device_list **AVDeviceInfoList)  {
     C.avdevice_free_list_devices(
-        (**C.AVDeviceInfoList)(unsafe.Pointer(device_list)))
+        (**C.struct_AVDeviceInfoList)(unsafe.Pointer(device_list)))
 }
 
 /**
@@ -374,16 +407,16 @@ func Avdevice_list_input_sources(device *AVInputFormat, device_name *byte,
     return int32(C.avdevice_list_input_sources(
         (*C.struct_AVInputFormat)(unsafe.Pointer(device)), 
         (*C.char)(unsafe.Pointer(device_name)), 
-        (*C.AVDictionary)(unsafe.Pointer(device_options)), 
-        (**C.AVDeviceInfoList)(unsafe.Pointer(device_list))))
+        (*C.struct_AVDictionary)(unsafe.Pointer(device_options)), 
+        (**C.struct_AVDeviceInfoList)(unsafe.Pointer(device_list))))
 }
 func Avdevice_list_output_sinks(device *AVOutputFormat, device_name *byte,
                                device_options *AVDictionary, device_list **AVDeviceInfoList) int32 {
     return int32(C.avdevice_list_output_sinks(
         (*C.struct_AVOutputFormat)(unsafe.Pointer(device)), 
         (*C.char)(unsafe.Pointer(device_name)), 
-        (*C.AVDictionary)(unsafe.Pointer(device_options)), 
-        (**C.AVDeviceInfoList)(unsafe.Pointer(device_list))))
+        (*C.struct_AVDictionary)(unsafe.Pointer(device_options)), 
+        (**C.struct_AVDeviceInfoList)(unsafe.Pointer(device_list))))
 }
 
 /**

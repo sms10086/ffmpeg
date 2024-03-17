@@ -27,14 +27,11 @@ package ffmpeg
 //const LIBAVFILTER_VERSION_MAJOR = 7
 //const LIBAVFILTER_VERSION_MINOR = 40
 //const LIBAVFILTER_VERSION_MICRO = 101
-//const LIBAVFILTER_VERSION_INT = AV_VERSION_INT(LIBAVFILTER_VERSION_MAJOR,                                                 LIBAVFILTER_VERSION_MINOR,                                                 LIBAVFILTER_VERSION_MICRO)
-//const LIBAVFILTER_VERSION = AV_VERSION(LIBAVFILTER_VERSION_MAJOR,                                               LIBAVFILTER_VERSION_MINOR,                                               LIBAVFILTER_VERSION_MICRO)
-//const LIBAVFILTER_BUILD = LIBAVFILTER_VERSION_INT
-//const LIBAVFILTER_IDENT = "Lavfi" AV_STRINGIFY(LIBAVFILTER_VERSION)
-//const FF_API_OLD_FILTER_OPTS_ERROR = (LIBAVFILTER_VERSION_MAJOR < 8)
-//const FF_API_LAVR_OPTS = (LIBAVFILTER_VERSION_MAJOR < 8)
-//const FF_API_FILTER_GET_SET = (LIBAVFILTER_VERSION_MAJOR < 8)
-//const FF_API_NEXT = (LIBAVFILTER_VERSION_MAJOR < 8)
+//const LIBAVFILTER_VERSION_INT =  AV_VERSION_INT(LIBAVFILTER_VERSION_MAJOR,                                                 LIBAVFILTER_VERSION_MINOR,                                                 LIBAVFILTER_VERSION_MICRO) 
+//const LIBAVFILTER_VERSION =      AV_VERSION(LIBAVFILTER_VERSION_MAJOR,                                               LIBAVFILTER_VERSION_MINOR,                                               LIBAVFILTER_VERSION_MICRO) 
+//const LIBAVFILTER_BUILD =        LIBAVFILTER_VERSION_INT 
+//const LIBAVFILTER_IDENT =        "Lavfi" AV_STRINGIFY(LIBAVFILTER_VERSION) 
+
 
 
                           
@@ -65,16 +62,16 @@ package ffmpeg
  */
 
                                     
-
+                                                                           
       
                         
-
+                                                                           
       
                              
-
+                                                                           
       
                    
-
+                                                                           
       
 
                                

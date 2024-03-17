@@ -27,27 +27,11 @@ package ffmpeg
 //const LIBAVFORMAT_VERSION_MAJOR = 58
 //const LIBAVFORMAT_VERSION_MINOR = 20
 //const LIBAVFORMAT_VERSION_MICRO = 100
-//const LIBAVFORMAT_VERSION_INT = AV_VERSION_INT(LIBAVFORMAT_VERSION_MAJOR,                                                 LIBAVFORMAT_VERSION_MINOR,                                                 LIBAVFORMAT_VERSION_MICRO)
-//const LIBAVFORMAT_VERSION = AV_VERSION(LIBAVFORMAT_VERSION_MAJOR,                                               LIBAVFORMAT_VERSION_MINOR,                                               LIBAVFORMAT_VERSION_MICRO)
-//const LIBAVFORMAT_BUILD = LIBAVFORMAT_VERSION_INT
-//const LIBAVFORMAT_IDENT = "Lavf" AV_STRINGIFY(LIBAVFORMAT_VERSION)
-//const FF_API_COMPUTE_PKT_FIELDS2 = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_OLD_OPEN_CALLBACKS = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_LAVF_AVCTX = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_HTTP_USER_AGENT = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_HLS_WRAP = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_HLS_USE_LOCALTIME = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_LAVF_KEEPSIDE_FLAG = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_OLD_ROTATE_API = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_FORMAT_GET_SET = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_OLD_AVIO_EOF_0 = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_LAVF_FFSERVER = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_FORMAT_FILENAME = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_OLD_RTSP_OPTIONS = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_NEXT = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_DASH_MIN_SEG_DURATION = (LIBAVFORMAT_VERSION_MAJOR < 59)
-//const FF_API_LAVF_MP4A_LATM = (LIBAVFORMAT_VERSION_MAJOR < 59)
-const FF_API_R_FRAME_RATE = 1
+//const LIBAVFORMAT_VERSION_INT =  AV_VERSION_INT(LIBAVFORMAT_VERSION_MAJOR,                                                 LIBAVFORMAT_VERSION_MINOR,                                                 LIBAVFORMAT_VERSION_MICRO) 
+//const LIBAVFORMAT_VERSION =      AV_VERSION(LIBAVFORMAT_VERSION_MAJOR,                                               LIBAVFORMAT_VERSION_MINOR,                                               LIBAVFORMAT_VERSION_MICRO) 
+//const LIBAVFORMAT_BUILD =        LIBAVFORMAT_VERSION_INT 
+//const LIBAVFORMAT_IDENT =        "Lavf" AV_STRINGIFY(LIBAVFORMAT_VERSION) 
+
 
 
                           
@@ -84,56 +68,56 @@ const FF_API_R_FRAME_RATE = 1
  *
  */
                                   
-
+                                                                        
       
                                  
-
+                                                                        
       
                          
-
+                                                                        
       
                               
-
+                                                                        
       
                        
-
+                                                                        
       
                                 
-
+                                                                        
       
                                  
-
+                                                                        
       
                              
-
+                                                                        
       
                              
-
+                                                                        
       
                              
-
+                                                                        
       
                             
-
+                                                                        
       
                               
-
+                                                                        
       
                                
-
+                                                                        
       
                    
-
+                                                                        
       
                                     
-
+                                                                        
       
                              
-
+                                                                        
       
 
 
                            
-
+                                        
       
                                

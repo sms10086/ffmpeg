@@ -42,15 +42,16 @@ import (
     "unsafe"
 )
 
-const AVFILTER_FLAG_DYNAMIC_INPUTS = (1 << 0)
-const AVFILTER_FLAG_DYNAMIC_OUTPUTS = (1 << 1)
-const AVFILTER_FLAG_SLICE_THREADS = (1 << 2)
-const AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC = (1 << 16)
-const AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL = (1 << 17)
-const AVFILTER_FLAG_SUPPORT_TIMELINE = (AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC | AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL)
-const AVFILTER_THREAD_SLICE = (1 << 0)
+const AVFILTER_FLAG_DYNAMIC_INPUTS =         (1 << 0) 
+const AVFILTER_FLAG_DYNAMIC_OUTPUTS =        (1 << 1) 
+const AVFILTER_FLAG_SLICE_THREADS =          (1 << 2) 
+const AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC =   (1 << 16) 
+const AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL =  (1 << 17) 
+const AVFILTER_FLAG_SUPPORT_TIMELINE =  (AVFILTER_FLAG_SUPPORT_TIMELINE_GENERIC | AVFILTER_FLAG_SUPPORT_TIMELINE_INTERNAL) 
+const AVFILTER_THREAD_SLICE =  (1 << 0) 
 const AVFILTER_CMD_FLAG_ONE = 1
 const AVFILTER_CMD_FLAG_FAST = 2
+
 
 
                            
@@ -104,15 +105,21 @@ func Avfilter_license() string {
     return C.GoString(C.avfilter_license())
 }
 
-type AVFilterPad C.struct_AVFilterPad
-type AVFilterFormats C.struct_AVFilterFormats
+// type AVFilterContext
+// type AVFilterLink
+type AVFilterPad struct {
+}
+
+type AVFilterFormats struct {
+}
+
 
 /**
  * Get the number of elements in a NULL-terminated array of AVFilterPads (e.g.
  * AVFilter.inputs/outputs).
  */
 func Avfilter_pad_count(pads *AVFilterPad) int32 {
-    return int32(C.avfilter_pad_count((*C.AVFilterPad)(unsafe.Pointer(pads))))
+    return int32(C.avfilter_pad_count((*C.struct_AVFilterPad)(unsafe.Pointer(pads))))
 }
 
 /**
@@ -125,8 +132,8 @@ func Avfilter_pad_count(pads *AVFilterPad) int32 {
  * @return name of the pad_idx'th pad in pads
  */
 func Avfilter_pad_get_name(pads *AVFilterPad, pad_idx int32) string {
-    return C.GoString(C.avfilter_pad_get_name((*C.AVFilterPad)(unsafe.Pointer(pads)), 
-        C.int(pad_idx)))
+    return C.GoString(C.avfilter_pad_get_name(
+        (*C.struct_AVFilterPad)(unsafe.Pointer(pads)), C.int(pad_idx)))
 }
 
 /**
@@ -140,7 +147,7 @@ func Avfilter_pad_get_name(pads *AVFilterPad, pad_idx int32) string {
  */
 func Avfilter_pad_get_type(pads *AVFilterPad, pad_idx int32) AVMediaType {
     return AVMediaType(C.avfilter_pad_get_type(
-        (*C.AVFilterPad)(unsafe.Pointer(pads)), C.int(pad_idx)))
+        (*C.struct_AVFilterPad)(unsafe.Pointer(pads)), C.int(pad_idx)))
 }
 
 /**
@@ -187,17 +194,62 @@ func Avfilter_pad_get_type(pads *AVFilterPad, pad_idx int32) AVMediaType {
  * Filter definition. This defines the pads a filter contains, and all the
  * callback functions used to interact with the filter.
  */
-type AVFilter C.struct_AVFilter
+type AVFilter struct {
+    Name *byte
+    Description *byte
+    Inputs *AVFilterPad
+    Outputs *AVFilterPad
+    Priv_class *AVClass
+    Flags int32
+    Preinit uintptr
+    Init uintptr
+    Init_dict uintptr
+    Uninit uintptr
+    Query_formats uintptr
+    Priv_size int32
+    Flags_internal int32
+    Next *AVFilter
+    Process_command uintptr
+    Init_opaque uintptr
+    Activate uintptr
+}
+
 
 /**
  * Process multiple parts of the frame concurrently.
  */
 
 
-type AVFilterInternal C.struct_AVFilterInternal
+type AVFilterInternal struct {
+}
+
 
 /** An instance of a filter */
-type AVFilterContext C.struct_AVFilterContext
+type AVFilterContext struct {
+    Av_class *AVClass
+    Filter *AVFilter
+    Name *byte
+    Input_pads *AVFilterPad
+    Inputs **AVFilterLink
+    Nb_inputs uint32
+    Output_pads *AVFilterPad
+    Outputs **AVFilterLink
+    Nb_outputs uint32
+    Priv unsafe.Pointer
+    Graph *AVFilterGraph
+    Thread_type int32
+    Internal *AVFilterInternal
+    Command_queue *AVFilterCommand
+    Enable_str *byte
+    Enable unsafe.Pointer
+    Var_values *float64
+    Is_disabled int32
+    Hw_device_ctx *AVBufferRef
+    Nb_threads int32
+    Ready uint32
+    Extra_hw_frames int32
+}
+
 
 /**
  * A link between two filters. This contains pointers to the source and
@@ -211,7 +263,46 @@ type AVFilterContext C.struct_AVFilterContext
  * In the future, access to the header may be reserved for filters
  * implementation.
  */
-type AVFilterLink C.struct_AVFilterLink
+type AVFilterLink struct {
+    Src *AVFilterContext
+    Srcpad *AVFilterPad
+    Dst *AVFilterContext
+    Dstpad *AVFilterPad
+    Type AVMediaType
+    W int32
+    H int32
+    Sample_aspect_ratio AVRational
+    Channel_layout uint64
+    Sample_rate int32
+    Format int32
+    Time_base AVRational
+    In_formats *AVFilterFormats
+    Out_formats *AVFilterFormats
+    In_samplerates *AVFilterFormats
+    Out_samplerates *AVFilterFormats
+    In_channel_layouts *AVFilterChannelLayouts
+    Out_channel_layouts *AVFilterChannelLayouts
+    Request_samples int32
+    Init_state int32
+    Graph *AVFilterGraph
+    Current_pts int64
+    Current_pts_us int64
+    Age_index int32
+    Frame_rate AVRational
+    Partial_buf *AVFrame
+    Partial_buf_size int32
+    Min_samples int32
+    Max_samples int32
+    Channels int32
+    Flags uint32
+    Frame_count_in int64
+    Frame_count_out int64
+    Frame_pool unsafe.Pointer
+    Frame_wanted_out int32
+    Hw_frames_ctx *AVBufferRef
+    Reserved [0xF000]byte
+}
+
 
 /**
  * Link two filters together.
@@ -224,8 +315,8 @@ type AVFilterLink C.struct_AVFilterLink
  */
 func Avfilter_link(src *AVFilterContext, srcpad uint32,
                   dst *AVFilterContext, dstpad uint32) int32 {
-    return int32(C.avfilter_link((*C.AVFilterContext)(unsafe.Pointer(src)), 
-        C.unsigned(srcpad), (*C.AVFilterContext)(unsafe.Pointer(dst)), 
+    return int32(C.avfilter_link((*C.struct_AVFilterContext)(unsafe.Pointer(src)), 
+        C.unsigned(srcpad), (*C.struct_AVFilterContext)(unsafe.Pointer(dst)), 
         C.unsigned(dstpad)))
 }
 
@@ -233,16 +324,19 @@ func Avfilter_link(src *AVFilterContext, srcpad uint32,
  * Free the link in *link, and set its pointer to NULL.
  */
 func Avfilter_link_free(link **AVFilterLink)  {
-    C.avfilter_link_free((**C.AVFilterLink)(unsafe.Pointer(link)))
+    C.avfilter_link_free((**C.struct_AVFilterLink)(unsafe.Pointer(link)))
 }
 
                          
-   
-                                        
-                                               
-   
-                    
-                                                   
+/**
+ * Get the number of channels of a link.
+ * @deprecated Use av_buffersink_get_channels()
+ */
+
+func Avfilter_link_get_channels(link *AVFilterLink) int32 {
+    return int32(C.avfilter_link_get_channels(
+        (*C.struct_AVFilterLink)(unsafe.Pointer(link))))
+}
       
 
 /**
@@ -252,7 +346,7 @@ func Avfilter_link_free(link **AVFilterLink)  {
  */
 
 func Avfilter_link_set_closed(link *AVFilterLink, closed int32)  {
-    C.avfilter_link_set_closed((*C.AVFilterLink)(unsafe.Pointer(link)), 
+    C.avfilter_link_set_closed((*C.struct_AVFilterLink)(unsafe.Pointer(link)), 
         C.int(closed))
 }
 
@@ -264,7 +358,7 @@ func Avfilter_link_set_closed(link *AVFilterLink, closed int32)  {
  */
 func Avfilter_config_links(filter *AVFilterContext) int32 {
     return int32(C.avfilter_config_links(
-        (*C.AVFilterContext)(unsafe.Pointer(filter))))
+        (*C.struct_AVFilterContext)(unsafe.Pointer(filter))))
 }
 
 ///< Stop once a filter understood the command (for target=all for example), fast filters are favored automatically
@@ -276,7 +370,7 @@ func Avfilter_config_links(filter *AVFilterContext) int32 {
  */
 func Avfilter_process_command(filter *AVFilterContext, cmd *byte, arg *byte, res *byte, res_len int32, flags int32) int32 {
     return int32(C.avfilter_process_command(
-        (*C.AVFilterContext)(unsafe.Pointer(filter)), 
+        (*C.struct_AVFilterContext)(unsafe.Pointer(filter)), 
         (*C.char)(unsafe.Pointer(cmd)), (*C.char)(unsafe.Pointer(arg)), 
         (*C.char)(unsafe.Pointer(res)), C.int(res_len), C.int(flags)))
 }
@@ -295,30 +389,37 @@ func Av_filter_iterate(opaque *unsafe.Pointer) *AVFilter {
 }
 
                
-                                                                  
-                    
-                                 
+/** Initialize the filter system. Register all builtin filters. */
 
-   
-                                                            
-                                                                         
-                                                                               
-                     
-  
-                                       
-                                                                 
-            
-   
-                    
-                                        
+func Avfilter_register_all()  {
+    C.avfilter_register_all()
+}
 
-   
-                                       
-                                                                            
-                                                                                
-   
-                    
-                                                    
+/**
+ * Register a filter. This is only needed if you plan to use
+ * avfilter_get_by_name later to lookup the AVFilter structure by name. A
+ * filter can still by instantiated with avfilter_graph_alloc_filter even if it
+ * is not registered.
+ *
+ * @param filter the filter to register
+ * @return 0 if the registration was successful, a negative value
+ * otherwise
+ */
+
+func Avfilter_register(filter *AVFilter) int32 {
+    return int32(C.avfilter_register((*C.struct_AVFilter)(unsafe.Pointer(filter))))
+}
+
+/**
+ * Iterate over all registered filters.
+ * @return If prev is non-NULL, next registered filter after prev or NULL if
+ * prev is the last filter. If prev is NULL, return the first registered filter.
+ */
+
+func Avfilter_next(prev *AVFilter) *AVFilter {
+    return (*AVFilter)(unsafe.Pointer(C.avfilter_next(
+        (*C.struct_AVFilter)(unsafe.Pointer(prev)))))
+}
       
 
 /**
@@ -329,7 +430,8 @@ func Av_filter_iterate(opaque *unsafe.Pointer) *AVFilter {
  *             NULL if none found.
  */
 func Avfilter_get_by_name(name *byte) *AVFilter {
-    return (*AVFilter)(unsafe.Pointer(C.avfilter_get_by_name((*C.char)(unsafe.Pointer(name)))))
+    return (*AVFilter)(unsafe.Pointer(C.avfilter_get_by_name(
+        (*C.char)(unsafe.Pointer(name)))))
 }
 
 
@@ -344,7 +446,8 @@ func Avfilter_get_by_name(name *byte) *AVFilter {
  * @return 0 on success, a negative AVERROR on failure
  */
 func Avfilter_init_str(ctx *AVFilterContext, args *byte) int32 {
-    return int32(C.avfilter_init_str((*C.AVFilterContext)(unsafe.Pointer(ctx)), 
+    return int32(C.avfilter_init_str(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
         (*C.char)(unsafe.Pointer(args))))
 }
 
@@ -369,8 +472,9 @@ func Avfilter_init_str(ctx *AVFilterContext, args *byte) int32 {
  * continue as usual.
  */
 func Avfilter_init_dict(ctx *AVFilterContext, options **AVDictionary) int32 {
-    return int32(C.avfilter_init_dict((*C.AVFilterContext)(unsafe.Pointer(ctx)), 
-        (**C.AVDictionary)(unsafe.Pointer(options))))
+    return int32(C.avfilter_init_dict(
+        (*C.struct_AVFilterContext)(unsafe.Pointer(ctx)), 
+        (**C.struct_AVDictionary)(unsafe.Pointer(options))))
 }
 
 /**
@@ -380,7 +484,7 @@ func Avfilter_init_dict(ctx *AVFilterContext, options **AVDictionary) int32 {
  * @param filter the filter to free
  */
 func Avfilter_free(filter *AVFilterContext)  {
-    C.avfilter_free((*C.AVFilterContext)(unsafe.Pointer(filter)))
+    C.avfilter_free((*C.struct_AVFilterContext)(unsafe.Pointer(filter)))
 }
 
 /**
@@ -395,9 +499,9 @@ func Avfilter_free(filter *AVFilterContext)  {
 func Avfilter_insert_filter(link *AVFilterLink, filt *AVFilterContext,
                            filt_srcpad_idx uint32, filt_dstpad_idx uint32) int32 {
     return int32(C.avfilter_insert_filter(
-        (*C.AVFilterLink)(unsafe.Pointer(link)), 
-        (*C.AVFilterContext)(unsafe.Pointer(filt)), C.unsigned(filt_srcpad_idx), 
-        C.unsigned(filt_dstpad_idx)))
+        (*C.struct_AVFilterLink)(unsafe.Pointer(link)), 
+        (*C.struct_AVFilterContext)(unsafe.Pointer(filt)), 
+        C.unsigned(filt_srcpad_idx), C.unsigned(filt_dstpad_idx)))
 }
 
 /**
@@ -409,7 +513,9 @@ func Avfilter_get_class() *AVClass {
     return (*AVClass)(unsafe.Pointer(C.avfilter_get_class()))
 }
 
-type AVFilterGraphInternal C.struct_AVFilterGraphInternal
+type AVFilterGraphInternal struct {
+}
+
 
 /**
  * A function pointer passed to the @ref AVFilterGraph.execute callback to be
@@ -439,7 +545,23 @@ type avfilter_action_func C.avfilter_action_func
  */
 type avfilter_execute_func C.avfilter_execute_func
 
-type AVFilterGraph C.struct_AVFilterGraph
+type AVFilterGraph struct {
+    Av_class *AVClass
+    Filters **AVFilterContext
+    Nb_filters uint32
+    Scale_sws_opts *byte
+    Resample_lavr_opts *byte
+    Thread_type int32
+    Nb_threads int32
+    Internal *AVFilterGraphInternal
+    Opaque unsafe.Pointer
+    Execute *avfilter_execute_func
+    Aresample_swr_opts *byte
+    Sink_links **AVFilterLink
+    Sink_links_count int32
+    Disable_auto_convert uint32
+}
+
 
 /**
  * Allocate a filter graph.
@@ -468,8 +590,9 @@ func Avfilter_graph_alloc_filter(graph *AVFilterGraph,
                                              filter *AVFilter,
                                              name *byte) *AVFilterContext {
     return (*AVFilterContext)(unsafe.Pointer(C.avfilter_graph_alloc_filter(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
-        (*C.AVFilter)(unsafe.Pointer(filter)), (*C.char)(unsafe.Pointer(name)))))
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilter)(unsafe.Pointer(filter)), 
+        (*C.char)(unsafe.Pointer(name)))))
 }
 
 /**
@@ -482,7 +605,7 @@ func Avfilter_graph_alloc_filter(graph *AVFilterGraph,
  */
 func Avfilter_graph_get_filter(graph *AVFilterGraph, name *byte) *AVFilterContext {
     return (*AVFilterContext)(unsafe.Pointer(C.avfilter_graph_get_filter(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(name)))))
 }
 
@@ -503,10 +626,10 @@ func Avfilter_graph_create_filter(filt_ctx **AVFilterContext, filt *AVFilter,
                                  name *byte, args *byte, opaque unsafe.Pointer,
                                  graph_ctx *AVFilterGraph) int32 {
     return int32(C.avfilter_graph_create_filter(
-        (**C.AVFilterContext)(unsafe.Pointer(filt_ctx)), 
-        (*C.AVFilter)(unsafe.Pointer(filt)), (*C.char)(unsafe.Pointer(name)), 
-        (*C.char)(unsafe.Pointer(args)), opaque, 
-        (*C.AVFilterGraph)(unsafe.Pointer(graph_ctx))))
+        (**C.struct_AVFilterContext)(unsafe.Pointer(filt_ctx)), 
+        (*C.struct_AVFilter)(unsafe.Pointer(filt)), 
+        (*C.char)(unsafe.Pointer(name)), (*C.char)(unsafe.Pointer(args)), opaque, 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph_ctx))))
 }
 
 /**
@@ -518,10 +641,14 @@ func Avfilter_graph_create_filter(filt_ctx **AVFilterContext, filt *AVFilter,
  * @param flags  any of the AVFILTER_AUTO_CONVERT_* constants
  */
 func Avfilter_graph_set_auto_convert(graph *AVFilterGraph, flags uint32)  {
-    C.avfilter_graph_set_auto_convert((*C.AVFilterGraph)(unsafe.Pointer(graph)), 
-        C.unsigned(flags))
+    C.avfilter_graph_set_auto_convert(
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), C.unsigned(flags))
 }
 
+const (
+    AVFILTER_AUTO_CONVERT_ALL  = 0 + iota
+    AVFILTER_AUTO_CONVERT_NONE = -1
+)
 
 
 /**
@@ -533,7 +660,7 @@ func Avfilter_graph_set_auto_convert(graph *AVFilterGraph, flags uint32)  {
  */
 func Avfilter_graph_config(graphctx *AVFilterGraph, log_ctx unsafe.Pointer) int32 {
     return int32(C.avfilter_graph_config(
-        (*C.AVFilterGraph)(unsafe.Pointer(graphctx)), log_ctx))
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graphctx)), log_ctx))
 }
 
 /**
@@ -541,7 +668,7 @@ func Avfilter_graph_config(graphctx *AVFilterGraph, log_ctx unsafe.Pointer) int3
  * If *graph is NULL, do nothing.
  */
 func Avfilter_graph_free(graph **AVFilterGraph)  {
-    C.avfilter_graph_free((**C.AVFilterGraph)(unsafe.Pointer(graph)))
+    C.avfilter_graph_free((**C.struct_AVFilterGraph)(unsafe.Pointer(graph)))
 }
 
 /**
@@ -553,7 +680,13 @@ func Avfilter_graph_free(graph **AVFilterGraph)  {
  * This struct specifies, per each not connected pad contained in the graph, the
  * filter context and the pad index required for establishing a link.
  */
-type AVFilterInOut C.struct_AVFilterInOut
+type AVFilterInOut struct {
+    Name *byte
+    Filter_ctx *AVFilterContext
+    Pad_idx int32
+    Next *AVFilterInOut
+}
+
 
 /**
  * Allocate a single AVFilterInOut entry.
@@ -569,7 +702,7 @@ func Avfilter_inout_alloc() *AVFilterInOut {
  * If *inout is NULL, do nothing.
  */
 func Avfilter_inout_free(inout **AVFilterInOut)  {
-    C.avfilter_inout_free((**C.AVFilterInOut)(unsafe.Pointer(inout)))
+    C.avfilter_inout_free((**C.struct_AVFilterInOut)(unsafe.Pointer(inout)))
 }
 
 /**
@@ -594,10 +727,10 @@ func Avfilter_graph_parse(graph *AVFilterGraph, filters *byte,
                          inputs *AVFilterInOut, outputs *AVFilterInOut,
                          log_ctx unsafe.Pointer) int32 {
     return int32(C.avfilter_graph_parse(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(filters)), 
-        (*C.AVFilterInOut)(unsafe.Pointer(inputs)), 
-        (*C.AVFilterInOut)(unsafe.Pointer(outputs)), log_ctx))
+        (*C.struct_AVFilterInOut)(unsafe.Pointer(inputs)), 
+        (*C.struct_AVFilterInOut)(unsafe.Pointer(outputs)), log_ctx))
 }
 
 /**
@@ -621,10 +754,10 @@ func Avfilter_graph_parse_ptr(graph *AVFilterGraph, filters *byte,
                              inputs **AVFilterInOut, outputs **AVFilterInOut,
                              log_ctx unsafe.Pointer) int32 {
     return int32(C.avfilter_graph_parse_ptr(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(filters)), 
-        (**C.AVFilterInOut)(unsafe.Pointer(inputs)), 
-        (**C.AVFilterInOut)(unsafe.Pointer(outputs)), log_ctx))
+        (**C.struct_AVFilterInOut)(unsafe.Pointer(inputs)), 
+        (**C.struct_AVFilterInOut)(unsafe.Pointer(outputs)), log_ctx))
 }
 
 /**
@@ -653,10 +786,10 @@ func Avfilter_graph_parse2(graph *AVFilterGraph, filters *byte,
                           inputs **AVFilterInOut,
                           outputs **AVFilterInOut) int32 {
     return int32(C.avfilter_graph_parse2(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(filters)), 
-        (**C.AVFilterInOut)(unsafe.Pointer(inputs)), 
-        (**C.AVFilterInOut)(unsafe.Pointer(outputs))))
+        (**C.struct_AVFilterInOut)(unsafe.Pointer(inputs)), 
+        (**C.struct_AVFilterInOut)(unsafe.Pointer(outputs))))
 }
 
 /**
@@ -676,7 +809,7 @@ func Avfilter_graph_parse2(graph *AVFilterGraph, filters *byte,
  */
 func Avfilter_graph_send_command(graph *AVFilterGraph, target *byte, cmd *byte, arg *byte, res *byte, res_len int32, flags int32) int32 {
     return int32(C.avfilter_graph_send_command(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(target)), (*C.char)(unsafe.Pointer(cmd)), 
         (*C.char)(unsafe.Pointer(arg)), (*C.char)(unsafe.Pointer(res)), 
         C.int(res_len), C.int(flags)))
@@ -699,7 +832,7 @@ func Avfilter_graph_send_command(graph *AVFilterGraph, target *byte, cmd *byte, 
  */
 func Avfilter_graph_queue_command(graph *AVFilterGraph, target *byte, cmd *byte, arg *byte, flags int32, ts float64) int32 {
     return int32(C.avfilter_graph_queue_command(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(target)), (*C.char)(unsafe.Pointer(cmd)), 
         (*C.char)(unsafe.Pointer(arg)), C.int(flags), C.double(ts)))
 }
@@ -715,7 +848,7 @@ func Avfilter_graph_queue_command(graph *AVFilterGraph, target *byte, cmd *byte,
  */
 func Avfilter_graph_dump(graph *AVFilterGraph, options *byte) string {
     return C.GoString(C.avfilter_graph_dump(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph)), 
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph)), 
         (*C.char)(unsafe.Pointer(options))))
 }
 
@@ -739,7 +872,7 @@ func Avfilter_graph_dump(graph *AVFilterGraph, options *byte) string {
  */
 func Avfilter_graph_request_oldest(graph *AVFilterGraph) int32 {
     return int32(C.avfilter_graph_request_oldest(
-        (*C.AVFilterGraph)(unsafe.Pointer(graph))))
+        (*C.struct_AVFilterGraph)(unsafe.Pointer(graph))))
 }
 
 /**
