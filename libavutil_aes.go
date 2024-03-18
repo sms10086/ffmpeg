@@ -35,6 +35,7 @@ import (
 
 
 
+
                     
                     
 
@@ -51,7 +52,9 @@ import (
 
 //extern const int av_aes_size;
 
-type AVAES C.struct_AVAES
+type AVAES struct {
+}
+
 
 /**
  * Allocate an AVAES context.

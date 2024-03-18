@@ -34,6 +34,7 @@ import (
 
 
 
+
                         
                         
 
@@ -50,7 +51,9 @@ import (
 
 //extern const int av_twofish_size;
 
-type AVTWOFISH C.struct_AVTWOFISH
+type AVTWOFISH struct {
+}
+
 
 /**
   * Allocate an AVTWOFISH context

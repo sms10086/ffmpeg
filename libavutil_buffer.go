@@ -30,7 +30,8 @@ import (
     "unsafe"
 )
 
-const AV_BUFFER_FLAG_READONLY = (1 << 0)
+const AV_BUFFER_FLAG_READONLY =  (1 << 0) 
+
 
 
 /**
@@ -87,7 +88,9 @@ const AV_BUFFER_FLAG_READONLY = (1 << 0)
  * A reference counted buffer type. It is opaque and is meant to be used through
  * references (AVBufferRef).
  */
-type AVBuffer C.struct_AVBuffer
+type AVBuffer struct {
+}
+
 
 /**
  * A reference to a data buffer.
@@ -95,7 +98,12 @@ type AVBuffer C.struct_AVBuffer
  * The size of this struct is not a part of the public ABI and it is not meant
  * to be allocated directly.
  */
-type AVBufferRef C.struct_AVBufferRef
+type AVBufferRef struct {
+    Buffer *AVBuffer
+    Data *uint8
+    Size int32
+}
+
 
 /**
  * Allocate an AVBuffer of the given size using av_malloc().
@@ -139,8 +147,9 @@ func Av_buffer_create(data *uint8, size int32,
                               free func(opaque unsafe.Pointer, data *uint8) ,
                               opaque unsafe.Pointer, flags int32) *AVBufferRef {
     cb2 := syscall.NewCallbackCDecl(free)
-    return (*AVBufferRef)(unsafe.Pointer(C.av_buffer_create((*C.uchar)(unsafe.Pointer(data)), 
-        C.int(size), (*[0]byte)(unsafe.Pointer(cb2)), opaque, C.int(flags))))
+    return (*AVBufferRef)(unsafe.Pointer(C.av_buffer_create(
+        (*C.uchar)(unsafe.Pointer(data)), C.int(size), 
+        (*[0]byte)(unsafe.Pointer(cb2)), opaque, C.int(flags))))
 }
 
 /**
@@ -159,7 +168,8 @@ func Av_buffer_default_free(opaque unsafe.Pointer, data *uint8)  {
  * failure.
  */
 func Av_buffer_ref(buf *AVBufferRef) *AVBufferRef {
-    return (*AVBufferRef)(unsafe.Pointer(C.av_buffer_ref((*C.AVBufferRef)(unsafe.Pointer(buf)))))
+    return (*AVBufferRef)(unsafe.Pointer(C.av_buffer_ref(
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf)))))
 }
 
 /**
@@ -169,7 +179,7 @@ func Av_buffer_ref(buf *AVBufferRef) *AVBufferRef {
  * @param buf the reference to be freed. The pointer is set to NULL on return.
  */
 func Av_buffer_unref(buf **AVBufferRef)  {
-    C.av_buffer_unref((**C.AVBufferRef)(unsafe.Pointer(buf)))
+    C.av_buffer_unref((**C.struct_AVBufferRef)(unsafe.Pointer(buf)))
 }
 
 /**
@@ -179,7 +189,8 @@ func Av_buffer_unref(buf **AVBufferRef)  {
  * A positive answer is valid until av_buffer_ref() is called on buf.
  */
 func Av_buffer_is_writable(buf *AVBufferRef) int32 {
-    return int32(C.av_buffer_is_writable((*C.AVBufferRef)(unsafe.Pointer(buf))))
+    return int32(C.av_buffer_is_writable(
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf))))
 }
 
 /**
@@ -187,11 +198,12 @@ func Av_buffer_is_writable(buf *AVBufferRef) int32 {
  */
 func Av_buffer_get_opaque(buf *AVBufferRef) unsafe.Pointer {
     return (unsafe.Pointer)(unsafe.Pointer(C.av_buffer_get_opaque(
-        (*C.AVBufferRef)(unsafe.Pointer(buf)))))
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf)))))
 }
 
 func Av_buffer_get_ref_count(buf *AVBufferRef) int32 {
-    return int32(C.av_buffer_get_ref_count((*C.AVBufferRef)(unsafe.Pointer(buf))))
+    return int32(C.av_buffer_get_ref_count(
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf))))
 }
 
 /**
@@ -205,7 +217,7 @@ func Av_buffer_get_ref_count(buf *AVBufferRef) int32 {
  */
 func Av_buffer_make_writable(buf **AVBufferRef) int32 {
     return int32(C.av_buffer_make_writable(
-        (**C.AVBufferRef)(unsafe.Pointer(buf))))
+        (**C.struct_AVBufferRef)(unsafe.Pointer(buf))))
 }
 
 /**
@@ -224,7 +236,7 @@ func Av_buffer_make_writable(buf **AVBufferRef) int32 {
  * a new buffer is allocated and the data is copied.
  */
 func Av_buffer_realloc(buf **AVBufferRef, size int32) int32 {
-    return int32(C.av_buffer_realloc((**C.AVBufferRef)(unsafe.Pointer(buf)), 
+    return int32(C.av_buffer_realloc((**C.struct_AVBufferRef)(unsafe.Pointer(buf)), 
         C.int(size)))
 }
 
@@ -266,7 +278,9 @@ func Av_buffer_realloc(buf **AVBufferRef, size int32) int32 {
  * directly. It is allocated with av_buffer_pool_init() and freed with
  * av_buffer_pool_uninit().
  */
-type AVBufferPool C.struct_AVBufferPool
+type AVBufferPool struct {
+}
+
 
 /**
  * Allocate and initialize a buffer pool.
@@ -315,7 +329,7 @@ func Av_buffer_pool_init2(size int32, opaque unsafe.Pointer,
  * @param pool pointer to the pool to be freed. It will be set to NULL.
  */
 func Av_buffer_pool_uninit(pool **AVBufferPool)  {
-    C.av_buffer_pool_uninit((**C.AVBufferPool)(unsafe.Pointer(pool)))
+    C.av_buffer_pool_uninit((**C.struct_AVBufferPool)(unsafe.Pointer(pool)))
 }
 
 /**
@@ -326,7 +340,7 @@ func Av_buffer_pool_uninit(pool **AVBufferPool)  {
  */
 func Av_buffer_pool_get(pool *AVBufferPool) *AVBufferRef {
     return (*AVBufferRef)(unsafe.Pointer(C.av_buffer_pool_get(
-        (*C.AVBufferPool)(unsafe.Pointer(pool)))))
+        (*C.struct_AVBufferPool)(unsafe.Pointer(pool)))))
 }
 
 /**

@@ -32,60 +32,61 @@ import (
     "unsafe"
 )
 
-//const AV_CH_FRONT_LEFT = 0x00000001
-//const AV_CH_FRONT_RIGHT = 0x00000002
-//const AV_CH_FRONT_CENTER = 0x00000004
-//const AV_CH_LOW_FREQUENCY = 0x00000008
-//const AV_CH_BACK_LEFT = 0x00000010
-//const AV_CH_BACK_RIGHT = 0x00000020
-//const AV_CH_FRONT_LEFT_OF_CENTER = 0x00000040
-//const AV_CH_FRONT_RIGHT_OF_CENTER = 0x00000080
-//const AV_CH_BACK_CENTER = 0x00000100
-//const AV_CH_SIDE_LEFT = 0x00000200
-//const AV_CH_SIDE_RIGHT = 0x00000400
-//const AV_CH_TOP_CENTER = 0x00000800
-//const AV_CH_TOP_FRONT_LEFT = 0x00001000
-//const AV_CH_TOP_FRONT_CENTER = 0x00002000
-//const AV_CH_TOP_FRONT_RIGHT = 0x00004000
-//const AV_CH_TOP_BACK_LEFT = 0x00008000
-//const AV_CH_TOP_BACK_CENTER = 0x00010000
-//const AV_CH_TOP_BACK_RIGHT = 0x00020000
-//const AV_CH_STEREO_LEFT = 0x20000000
-//const AV_CH_STEREO_RIGHT = 0x40000000
-//const AV_CH_WIDE_LEFT = 0x0000000080000000ULL
-//const AV_CH_WIDE_RIGHT = 0x0000000100000000ULL
-//const AV_CH_SURROUND_DIRECT_LEFT = 0x0000000200000000ULL
-//const AV_CH_SURROUND_DIRECT_RIGHT = 0x0000000400000000ULL
-//const AV_CH_LOW_FREQUENCY_2 = 0x0000000800000000ULL
-//const AV_CH_LAYOUT_NATIVE = 0x8000000000000000ULL
-//const AV_CH_LAYOUT_MONO = (AV_CH_FRONT_CENTER)
-//const AV_CH_LAYOUT_STEREO = (AV_CH_FRONT_LEFT|AV_CH_FRONT_RIGHT)
-//const AV_CH_LAYOUT_2POINT1 = (AV_CH_LAYOUT_STEREO|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_2_1 = (AV_CH_LAYOUT_STEREO|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_SURROUND = (AV_CH_LAYOUT_STEREO|AV_CH_FRONT_CENTER)
-//const AV_CH_LAYOUT_3POINT1 = (AV_CH_LAYOUT_SURROUND|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_4POINT0 = (AV_CH_LAYOUT_SURROUND|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_4POINT1 = (AV_CH_LAYOUT_4POINT0|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_2_2 = (AV_CH_LAYOUT_STEREO|AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT)
-//const AV_CH_LAYOUT_QUAD = (AV_CH_LAYOUT_STEREO|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT)
-//const AV_CH_LAYOUT_5POINT0 = (AV_CH_LAYOUT_SURROUND|AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT)
-//const AV_CH_LAYOUT_5POINT1 = (AV_CH_LAYOUT_5POINT0|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_5POINT0_BACK = (AV_CH_LAYOUT_SURROUND|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT)
-//const AV_CH_LAYOUT_5POINT1_BACK = (AV_CH_LAYOUT_5POINT0_BACK|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_6POINT0 = (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_6POINT0_FRONT = (AV_CH_LAYOUT_2_2|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER)
-//const AV_CH_LAYOUT_HEXAGONAL = (AV_CH_LAYOUT_5POINT0_BACK|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_6POINT1 = (AV_CH_LAYOUT_5POINT1|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_6POINT1_BACK = (AV_CH_LAYOUT_5POINT1_BACK|AV_CH_BACK_CENTER)
-//const AV_CH_LAYOUT_6POINT1_FRONT = (AV_CH_LAYOUT_6POINT0_FRONT|AV_CH_LOW_FREQUENCY)
-//const AV_CH_LAYOUT_7POINT0 = (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT)
-//const AV_CH_LAYOUT_7POINT0_FRONT = (AV_CH_LAYOUT_5POINT0|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER)
-//const AV_CH_LAYOUT_7POINT1 = (AV_CH_LAYOUT_5POINT1|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT)
-//const AV_CH_LAYOUT_7POINT1_WIDE = (AV_CH_LAYOUT_5POINT1|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER)
-//const AV_CH_LAYOUT_7POINT1_WIDE_BACK = (AV_CH_LAYOUT_5POINT1_BACK|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER)
-//const AV_CH_LAYOUT_OCTAGONAL = (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_LEFT|AV_CH_BACK_CENTER|AV_CH_BACK_RIGHT)
-//const AV_CH_LAYOUT_HEXADECAGONAL = (AV_CH_LAYOUT_OCTAGONAL|AV_CH_WIDE_LEFT|AV_CH_WIDE_RIGHT|AV_CH_TOP_BACK_LEFT|AV_CH_TOP_BACK_RIGHT|AV_CH_TOP_BACK_CENTER|AV_CH_TOP_FRONT_CENTER|AV_CH_TOP_FRONT_LEFT|AV_CH_TOP_FRONT_RIGHT)
-//const AV_CH_LAYOUT_STEREO_DOWNMIX = (AV_CH_STEREO_LEFT|AV_CH_STEREO_RIGHT)
+const AV_CH_FRONT_LEFT =              0x00000001 
+const AV_CH_FRONT_RIGHT =             0x00000002 
+const AV_CH_FRONT_CENTER =            0x00000004 
+const AV_CH_LOW_FREQUENCY =           0x00000008 
+const AV_CH_BACK_LEFT =               0x00000010 
+const AV_CH_BACK_RIGHT =              0x00000020 
+const AV_CH_FRONT_LEFT_OF_CENTER =    0x00000040 
+const AV_CH_FRONT_RIGHT_OF_CENTER =   0x00000080 
+const AV_CH_BACK_CENTER =             0x00000100 
+const AV_CH_SIDE_LEFT =               0x00000200 
+const AV_CH_SIDE_RIGHT =              0x00000400 
+const AV_CH_TOP_CENTER =              0x00000800 
+const AV_CH_TOP_FRONT_LEFT =          0x00001000 
+const AV_CH_TOP_FRONT_CENTER =        0x00002000 
+const AV_CH_TOP_FRONT_RIGHT =         0x00004000 
+const AV_CH_TOP_BACK_LEFT =           0x00008000 
+const AV_CH_TOP_BACK_CENTER =         0x00010000 
+const AV_CH_TOP_BACK_RIGHT =          0x00020000 
+const AV_CH_STEREO_LEFT =             0x20000000   
+const AV_CH_STEREO_RIGHT =            0x40000000   
+const AV_CH_WIDE_LEFT =               uint64(0x0000000080000000) 
+const AV_CH_WIDE_RIGHT =              uint64(0x0000000100000000) 
+const AV_CH_SURROUND_DIRECT_LEFT =    uint64(0x0000000200000000) 
+const AV_CH_SURROUND_DIRECT_RIGHT =   uint64(0x0000000400000000) 
+const AV_CH_LOW_FREQUENCY_2 =         uint64(0x0000000800000000) 
+const AV_CH_LAYOUT_NATIVE =           uint64(0x8000000000000000) 
+const AV_CH_LAYOUT_MONO =               (AV_CH_FRONT_CENTER) 
+const AV_CH_LAYOUT_STEREO =             (AV_CH_FRONT_LEFT|AV_CH_FRONT_RIGHT) 
+const AV_CH_LAYOUT_2POINT1 =            (AV_CH_LAYOUT_STEREO|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_2_1 =                (AV_CH_LAYOUT_STEREO|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_SURROUND =           (AV_CH_LAYOUT_STEREO|AV_CH_FRONT_CENTER) 
+const AV_CH_LAYOUT_3POINT1 =            (AV_CH_LAYOUT_SURROUND|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_4POINT0 =            (AV_CH_LAYOUT_SURROUND|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_4POINT1 =            (AV_CH_LAYOUT_4POINT0|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_2_2 =                (AV_CH_LAYOUT_STEREO|AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT) 
+const AV_CH_LAYOUT_QUAD =               (AV_CH_LAYOUT_STEREO|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT) 
+const AV_CH_LAYOUT_5POINT0 =            (AV_CH_LAYOUT_SURROUND|AV_CH_SIDE_LEFT|AV_CH_SIDE_RIGHT) 
+const AV_CH_LAYOUT_5POINT1 =            (AV_CH_LAYOUT_5POINT0|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_5POINT0_BACK =       (AV_CH_LAYOUT_SURROUND|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT) 
+const AV_CH_LAYOUT_5POINT1_BACK =       (AV_CH_LAYOUT_5POINT0_BACK|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_6POINT0 =            (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_6POINT0_FRONT =      (AV_CH_LAYOUT_2_2|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER) 
+const AV_CH_LAYOUT_HEXAGONAL =          (AV_CH_LAYOUT_5POINT0_BACK|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_6POINT1 =            (AV_CH_LAYOUT_5POINT1|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_6POINT1_BACK =       (AV_CH_LAYOUT_5POINT1_BACK|AV_CH_BACK_CENTER) 
+const AV_CH_LAYOUT_6POINT1_FRONT =      (AV_CH_LAYOUT_6POINT0_FRONT|AV_CH_LOW_FREQUENCY) 
+const AV_CH_LAYOUT_7POINT0 =            (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT) 
+const AV_CH_LAYOUT_7POINT0_FRONT =      (AV_CH_LAYOUT_5POINT0|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER) 
+const AV_CH_LAYOUT_7POINT1 =            (AV_CH_LAYOUT_5POINT1|AV_CH_BACK_LEFT|AV_CH_BACK_RIGHT) 
+const AV_CH_LAYOUT_7POINT1_WIDE =       (AV_CH_LAYOUT_5POINT1|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER) 
+const AV_CH_LAYOUT_7POINT1_WIDE_BACK =  (AV_CH_LAYOUT_5POINT1_BACK|AV_CH_FRONT_LEFT_OF_CENTER|AV_CH_FRONT_RIGHT_OF_CENTER) 
+const AV_CH_LAYOUT_OCTAGONAL =          (AV_CH_LAYOUT_5POINT0|AV_CH_BACK_LEFT|AV_CH_BACK_CENTER|AV_CH_BACK_RIGHT) 
+const AV_CH_LAYOUT_HEXADECAGONAL =      (AV_CH_LAYOUT_OCTAGONAL|AV_CH_WIDE_LEFT|AV_CH_WIDE_RIGHT|AV_CH_TOP_BACK_LEFT|AV_CH_TOP_BACK_RIGHT|AV_CH_TOP_BACK_CENTER|AV_CH_TOP_FRONT_CENTER|AV_CH_TOP_FRONT_LEFT|AV_CH_TOP_FRONT_RIGHT) 
+const AV_CH_LAYOUT_STEREO_DOWNMIX =     (AV_CH_STEREO_LEFT|AV_CH_STEREO_RIGHT) 
+
 
 
                                
@@ -180,7 +181,18 @@ import (
 
 
 
-type AVMatrixEncoding C.enum_AVMatrixEncoding
+type AVMatrixEncoding int32
+const (
+    AV_MATRIX_ENCODING_NONE AVMatrixEncoding = iota
+    AV_MATRIX_ENCODING_DOLBY
+    AV_MATRIX_ENCODING_DPLII
+    AV_MATRIX_ENCODING_DPLIIX
+    AV_MATRIX_ENCODING_DPLIIZ
+    AV_MATRIX_ENCODING_DOLBYEX
+    AV_MATRIX_ENCODING_DOLBYHEADPHONE
+    AV_MATRIX_ENCODING_NB
+)
+
 
 /**
  * Return a channel layout id that matches name, or 0 if no match is found.
@@ -216,8 +228,7 @@ func Av_get_channel_layout(name *byte) uint64 {
  * @return 0 on success, AVERROR(EINVAL) if the parsing fails.
  */
 func Av_get_extended_channel_layout(name *byte, channel_layout *uint64, nb_channels *int32) int32 {
-    return int32(C.av_get_extended_channel_layout(
-        (*C.char)(unsafe.Pointer(name)), 
+    return int32(C.av_get_extended_channel_layout((*C.char)(unsafe.Pointer(name)), 
         (*C.ulonglong)(unsafe.Pointer(channel_layout)), 
         (*C.int)(unsafe.Pointer(nb_channels))))
 }
@@ -230,11 +241,11 @@ func Av_get_extended_channel_layout(name *byte, channel_layout *uint64, nb_chann
  * @param buf_size size in bytes of the buffer
  */
 func Av_get_channel_layout_string(buf *byte, buf_size int32, nb_channels int32, channel_layout uint64)  {
-    C.av_get_channel_layout_string((*C.char)(unsafe.Pointer(buf)), 
-        C.int(buf_size), C.int(nb_channels), C.ulonglong(channel_layout))
+    C.av_get_channel_layout_string((*C.char)(unsafe.Pointer(buf)), C.int(buf_size), 
+        C.int(nb_channels), C.ulonglong(channel_layout))
 }
 
-
+// type AVBPrint
 /**
  * Append a description of a channel layout to a bprint buffer.
  */
@@ -268,16 +279,16 @@ func Av_get_default_channel_layout(nb_channels int32) int64 {
  */
 func Av_get_channel_layout_channel_index(channel_layout uint64,
                                         channel uint64) int32 {
-    return int32(C.av_get_channel_layout_channel_index(
-        C.ulonglong(channel_layout), C.ulonglong(channel)))
+    return int32(C.av_get_channel_layout_channel_index(C.ulonglong(channel_layout), 
+        C.ulonglong(channel)))
 }
 
 /**
  * Get the channel with the given index in channel_layout.
  */
 func Av_channel_layout_extract_channel(channel_layout uint64, index int32) uint64 {
-    return uint64(C.av_channel_layout_extract_channel(
-        C.ulonglong(channel_layout), C.int(index)))
+    return uint64(C.av_channel_layout_extract_channel(C.ulonglong(channel_layout), 
+        C.int(index)))
 }
 
 /**

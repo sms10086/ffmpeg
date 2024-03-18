@@ -38,10 +38,11 @@ import (
 )
 
 const AV_NUM_DATA_POINTERS = 8
-const AV_FRAME_FLAG_CORRUPT = (1 << 0)
-const AV_FRAME_FLAG_DISCARD = (1 << 2)
+const AV_FRAME_FLAG_CORRUPT =        (1 << 0) 
+const AV_FRAME_FLAG_DISCARD =    (1 << 2) 
 const FF_DECODE_ERROR_INVALID_BITSTREAM = 1
 const FF_DECODE_ERROR_MISSING_REFERENCE = 2
+
 
 
 /**
@@ -73,9 +74,41 @@ const FF_DECODE_ERROR_MISSING_REFERENCE = 2
  * AVFrame is an abstraction for reference-counted raw multimedia data.
  */
 
-type AVFrameSideDataType C.enum_AVFrameSideDataType
+type AVFrameSideDataType int32
+const (
+    AV_FRAME_DATA_PANSCAN AVFrameSideDataType = iota
+    AV_FRAME_DATA_A53_CC
+    AV_FRAME_DATA_STEREO3D
+    AV_FRAME_DATA_MATRIXENCODING
+    AV_FRAME_DATA_DOWNMIX_INFO
+    AV_FRAME_DATA_REPLAYGAIN
+    AV_FRAME_DATA_DISPLAYMATRIX
+    AV_FRAME_DATA_AFD
+    AV_FRAME_DATA_MOTION_VECTORS
+    AV_FRAME_DATA_SKIP_SAMPLES
+    AV_FRAME_DATA_AUDIO_SERVICE_TYPE
+    AV_FRAME_DATA_MASTERING_DISPLAY_METADATA
+    AV_FRAME_DATA_GOP_TIMECODE
+    AV_FRAME_DATA_SPHERICAL
+    AV_FRAME_DATA_CONTENT_LIGHT_LEVEL
+    AV_FRAME_DATA_ICC_PROFILE
+    AV_FRAME_DATA_QP_TABLE_PROPERTIES
+    AV_FRAME_DATA_QP_TABLE_DATA
+    AV_FRAME_DATA_S12M_TIMECODE
+)
 
-type AVActiveFormatDescription C.enum_AVActiveFormatDescription
+
+type AVActiveFormatDescription int32
+const (
+    AV_AFD_SAME AVActiveFormatDescription = 8 + iota
+    AV_AFD_4_3 = 9
+    AV_AFD_16_9 = 10
+    AV_AFD_14_9 = 11
+    AV_AFD_4_3_SP_14_9 = 13
+    AV_AFD_16_9_SP_14_9 = 14
+    AV_AFD_SP_4_3 = 15
+)
+
 
 
 /**
@@ -84,7 +117,14 @@ type AVActiveFormatDescription C.enum_AVActiveFormatDescription
  * sizeof(AVFrameSideData) is not a part of the public ABI, so new fields may be added
  * to the end with a minor bump.
  */
-type AVFrameSideData C.struct_AVFrameSideData
+type AVFrameSideData struct {
+    Type AVFrameSideDataType
+    Data *uint8
+    Size int32
+    Metadata *AVDictionary
+    Buf *AVBufferRef
+}
+
 
 /**
  * This structure describes decoded (raw) audio or video data.
@@ -116,7 +156,63 @@ type AVFrameSideData C.struct_AVFrameSideData
  * C structure field name for fields accessible through AVOptions. The AVClass
  * for AVFrame can be obtained from avcodec_get_frame_class()
  */
-type AVFrame C.struct_AVFrame
+type AVFrame struct {
+    Data [AV_NUM_DATA_POINTERS]*uint8
+    Linesize [AV_NUM_DATA_POINTERS]int32
+    Extended_data **uint8
+    Width int32
+    Height int32
+    Nb_samples int32
+    Format int32
+    Key_frame int32
+    Pict_type AVPictureType
+    Sample_aspect_ratio AVRational
+    Pts int64
+    Pkt_pts int64
+    Pkt_dts int64
+    Coded_picture_number int32
+    Display_picture_number int32
+    Quality int32
+    Opaque unsafe.Pointer
+    Error [AV_NUM_DATA_POINTERS]uint64
+    Repeat_pict int32
+    Interlaced_frame int32
+    Top_field_first int32
+    Palette_has_changed int32
+    Reordered_opaque int64
+    Sample_rate int32
+    Channel_layout uint64
+    Buf [AV_NUM_DATA_POINTERS]*AVBufferRef
+    Extended_buf **AVBufferRef
+    Nb_extended_buf int32
+    Side_data **AVFrameSideData
+    Nb_side_data int32
+    Flags int32
+    Color_range AVColorRange
+    Color_primaries AVColorPrimaries
+    Color_trc AVColorTransferCharacteristic
+    Colorspace AVColorSpace
+    Chroma_location AVChromaLocation
+    Best_effort_timestamp int64
+    Pkt_pos int64
+    Pkt_duration int64
+    Metadata *AVDictionary
+    Decode_error_flags int32
+    Channels int32
+    Pkt_size int32
+    Qscale_table *int8
+    Qstride int32
+    Qscale_type int32
+    Qp_table_buf *AVBufferRef
+    Hw_frames_ctx *AVBufferRef
+    Opaque_ref *AVBufferRef
+    Crop_top uint64
+    Crop_bottom uint64
+    Crop_left uint64
+    Crop_right uint64
+    Private_ref *AVBufferRef
+}
+
 
                         
 /**
@@ -126,114 +222,120 @@ type AVFrame C.struct_AVFrame
 
 func Av_frame_get_best_effort_timestamp(frame *AVFrame) int64 {
     return int64(C.av_frame_get_best_effort_timestamp(
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_best_effort_timestamp(frame *AVFrame, val int64)  {
-    C.av_frame_set_best_effort_timestamp((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_best_effort_timestamp((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.longlong(val))
 }
 
 func Av_frame_get_pkt_duration         (frame *AVFrame) int64 {
-    return int64(C.av_frame_get_pkt_duration((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int64(C.av_frame_get_pkt_duration(
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_pkt_duration         (frame *AVFrame, val int64)  {
-    C.av_frame_set_pkt_duration((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_pkt_duration((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.longlong(val))
 }
 
 func Av_frame_get_pkt_pos              (frame *AVFrame) int64 {
-    return int64(C.av_frame_get_pkt_pos((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int64(C.av_frame_get_pkt_pos((*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_pkt_pos              (frame *AVFrame, val int64)  {
-    C.av_frame_set_pkt_pos((*C.AVFrame)(unsafe.Pointer(frame)), C.longlong(val))
+    C.av_frame_set_pkt_pos((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        C.longlong(val))
 }
 
 func Av_frame_get_channel_layout       (frame *AVFrame) int64 {
     return int64(C.av_frame_get_channel_layout(
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_channel_layout       (frame *AVFrame, val int64)  {
-    C.av_frame_set_channel_layout((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_channel_layout((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.longlong(val))
 }
 
 func     Av_frame_get_channels             (frame *AVFrame) int32 {
-    return int32(C.av_frame_get_channels((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int32(C.av_frame_get_channels((*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_channels             (frame *AVFrame, val int32)  {
-    C.av_frame_set_channels((*C.AVFrame)(unsafe.Pointer(frame)), C.int(val))
+    C.av_frame_set_channels((*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(val))
 }
 
 func     Av_frame_get_sample_rate          (frame *AVFrame) int32 {
-    return int32(C.av_frame_get_sample_rate((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int32(C.av_frame_get_sample_rate(
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_sample_rate          (frame *AVFrame, val int32)  {
-    C.av_frame_set_sample_rate((*C.AVFrame)(unsafe.Pointer(frame)), C.int(val))
+    C.av_frame_set_sample_rate((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        C.int(val))
 }
 
 func Av_frame_get_metadata       (frame *AVFrame) *AVDictionary {
     return (*AVDictionary)(unsafe.Pointer(C.av_frame_get_metadata(
-        (*C.AVFrame)(unsafe.Pointer(frame)))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)))))
 }
 
 func          Av_frame_set_metadata       (frame *AVFrame, val *AVDictionary)  {
-    C.av_frame_set_metadata((*C.AVFrame)(unsafe.Pointer(frame)), 
-        (*C.AVDictionary)(unsafe.Pointer(val)))
+    C.av_frame_set_metadata((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        (*C.struct_AVDictionary)(unsafe.Pointer(val)))
 }
 
 func     Av_frame_get_decode_error_flags   (frame *AVFrame) int32 {
     return int32(C.av_frame_get_decode_error_flags(
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_decode_error_flags   (frame *AVFrame, val int32)  {
-    C.av_frame_set_decode_error_flags((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_decode_error_flags((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.int(val))
 }
 
 func     Av_frame_get_pkt_size(frame *AVFrame) int32 {
-    return int32(C.av_frame_get_pkt_size((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int32(C.av_frame_get_pkt_size((*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_pkt_size(frame *AVFrame, val int32)  {
-    C.av_frame_set_pkt_size((*C.AVFrame)(unsafe.Pointer(frame)), C.int(val))
+    C.av_frame_set_pkt_size((*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(val))
 }
                    
 
 func Av_frame_get_qp_table(f *AVFrame, stride *int32, typex *int32) *int8 {
-    return (*int8)(unsafe.Pointer(C.av_frame_get_qp_table((*C.AVFrame)(unsafe.Pointer(f)), 
-        (*C.int)(unsafe.Pointer(stride)), (*C.int)(unsafe.Pointer(typex)))))
+    return (*int8)(unsafe.Pointer(C.av_frame_get_qp_table(
+        (*C.struct_AVFrame)(unsafe.Pointer(f)), (*C.int)(unsafe.Pointer(stride)), 
+        (*C.int)(unsafe.Pointer(typex)))))
 }
 
 func Av_frame_set_qp_table(f *AVFrame, buf *AVBufferRef, stride int32, typex int32) int32 {
-    return int32(C.av_frame_set_qp_table((*C.AVFrame)(unsafe.Pointer(f)), 
-        (*C.AVBufferRef)(unsafe.Pointer(buf)), C.int(stride), C.int(typex)))
+    return int32(C.av_frame_set_qp_table((*C.struct_AVFrame)(unsafe.Pointer(f)), 
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf)), C.int(stride), 
+        C.int(typex)))
 }
       
 
 func Av_frame_get_colorspace(frame *AVFrame) AVColorSpace {
     return AVColorSpace(C.av_frame_get_colorspace(
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_colorspace(frame *AVFrame, val AVColorSpace)  {
-    C.av_frame_set_colorspace((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_colorspace((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.enum_AVColorSpace(val))
 }
 
 func Av_frame_get_color_range(frame *AVFrame) AVColorRange {
     return AVColorRange(C.av_frame_get_color_range(
-        (*C.AVFrame)(unsafe.Pointer(frame))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 func    Av_frame_set_color_range(frame *AVFrame, val AVColorRange)  {
-    C.av_frame_set_color_range((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_set_color_range((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.enum_AVColorRange(val))
 }
       
@@ -268,7 +370,7 @@ func Av_frame_alloc() *AVFrame {
  * @param frame frame to be freed. The pointer will be set to NULL.
  */
 func Av_frame_free(frame **AVFrame)  {
-    C.av_frame_free((**C.AVFrame)(unsafe.Pointer(frame)))
+    C.av_frame_free((**C.struct_AVFrame)(unsafe.Pointer(frame)))
 }
 
 /**
@@ -287,8 +389,8 @@ func Av_frame_free(frame **AVFrame)  {
  * @return 0 on success, a negative AVERROR on error
  */
 func Av_frame_ref(dst *AVFrame, src *AVFrame) int32 {
-    return int32(C.av_frame_ref((*C.AVFrame)(unsafe.Pointer(dst)), 
-        (*C.AVFrame)(unsafe.Pointer(src))))
+    return int32(C.av_frame_ref((*C.struct_AVFrame)(unsafe.Pointer(dst)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(src))))
 }
 
 /**
@@ -299,14 +401,15 @@ func Av_frame_ref(dst *AVFrame, src *AVFrame) int32 {
  * @return newly created AVFrame on success, NULL on error.
  */
 func Av_frame_clone(src *AVFrame) *AVFrame {
-    return (*AVFrame)(unsafe.Pointer(C.av_frame_clone((*C.AVFrame)(unsafe.Pointer(src)))))
+    return (*AVFrame)(unsafe.Pointer(C.av_frame_clone(
+        (*C.struct_AVFrame)(unsafe.Pointer(src)))))
 }
 
 /**
  * Unreference all the buffers referenced by frame and reset the frame fields.
  */
 func Av_frame_unref(frame *AVFrame)  {
-    C.av_frame_unref((*C.AVFrame)(unsafe.Pointer(frame)))
+    C.av_frame_unref((*C.struct_AVFrame)(unsafe.Pointer(frame)))
 }
 
 /**
@@ -317,8 +420,8 @@ func Av_frame_unref(frame *AVFrame)  {
  *           before calling this function to ensure that no memory is leaked.
  */
 func Av_frame_move_ref(dst *AVFrame, src *AVFrame)  {
-    C.av_frame_move_ref((*C.AVFrame)(unsafe.Pointer(dst)), 
-        (*C.AVFrame)(unsafe.Pointer(src)))
+    C.av_frame_move_ref((*C.struct_AVFrame)(unsafe.Pointer(dst)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(src)))
 }
 
 /**
@@ -345,7 +448,7 @@ func Av_frame_move_ref(dst *AVFrame, src *AVFrame)  {
  * @return 0 on success, a negative AVERROR on error.
  */
 func Av_frame_get_buffer(frame *AVFrame, align int32) int32 {
-    return int32(C.av_frame_get_buffer((*C.AVFrame)(unsafe.Pointer(frame)), 
+    return int32(C.av_frame_get_buffer((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.int(align)))
 }
 
@@ -362,7 +465,7 @@ func Av_frame_get_buffer(frame *AVFrame, align int32) int32 {
  * @see av_frame_make_writable(), av_buffer_is_writable()
  */
 func Av_frame_is_writable(frame *AVFrame) int32 {
-    return int32(C.av_frame_is_writable((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int32(C.av_frame_is_writable((*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 /**
@@ -377,7 +480,7 @@ func Av_frame_is_writable(frame *AVFrame) int32 {
  * av_buffer_make_writable()
  */
 func Av_frame_make_writable(frame *AVFrame) int32 {
-    return int32(C.av_frame_make_writable((*C.AVFrame)(unsafe.Pointer(frame))))
+    return int32(C.av_frame_make_writable((*C.struct_AVFrame)(unsafe.Pointer(frame))))
 }
 
 /**
@@ -392,8 +495,8 @@ func Av_frame_make_writable(frame *AVFrame) int32 {
  * @return >= 0 on success, a negative AVERROR on error.
  */
 func Av_frame_copy(dst *AVFrame, src *AVFrame) int32 {
-    return int32(C.av_frame_copy((*C.AVFrame)(unsafe.Pointer(dst)), 
-        (*C.AVFrame)(unsafe.Pointer(src))))
+    return int32(C.av_frame_copy((*C.struct_AVFrame)(unsafe.Pointer(dst)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(src))))
 }
 
 /**
@@ -405,8 +508,8 @@ func Av_frame_copy(dst *AVFrame, src *AVFrame) int32 {
  * Side data is also copied.
  */
 func Av_frame_copy_props(dst *AVFrame, src *AVFrame) int32 {
-    return int32(C.av_frame_copy_props((*C.AVFrame)(unsafe.Pointer(dst)), 
-        (*C.AVFrame)(unsafe.Pointer(src))))
+    return int32(C.av_frame_copy_props((*C.struct_AVFrame)(unsafe.Pointer(dst)), 
+        (*C.struct_AVFrame)(unsafe.Pointer(src))))
 }
 
 /**
@@ -419,7 +522,7 @@ func Av_frame_copy_props(dst *AVFrame, src *AVFrame) int32 {
  */
 func Av_frame_get_plane_buffer(frame *AVFrame, plane int32) *AVBufferRef {
     return (*AVBufferRef)(unsafe.Pointer(C.av_frame_get_plane_buffer(
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.int(plane))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(plane))))
 }
 
 /**
@@ -435,8 +538,8 @@ func Av_frame_new_side_data(frame *AVFrame,
                                         typex AVFrameSideDataType,
                                         size int32) *AVFrameSideData {
     return (*AVFrameSideData)(unsafe.Pointer(C.av_frame_new_side_data(
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.enum_AVFrameSideDataType(typex), 
-        C.int(size))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        C.enum_AVFrameSideDataType(typex), C.int(size))))
 }
 
 /**
@@ -455,8 +558,9 @@ func Av_frame_new_side_data_from_buf(frame *AVFrame,
                                                  typex AVFrameSideDataType,
                                                  buf *AVBufferRef) *AVFrameSideData {
     return (*AVFrameSideData)(unsafe.Pointer(C.av_frame_new_side_data_from_buf(
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.enum_AVFrameSideDataType(typex), 
-        (*C.AVBufferRef)(unsafe.Pointer(buf)))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        C.enum_AVFrameSideDataType(typex), 
+        (*C.struct_AVBufferRef)(unsafe.Pointer(buf)))))
 }
 
 /**
@@ -466,7 +570,8 @@ func Av_frame_new_side_data_from_buf(frame *AVFrame,
 func Av_frame_get_side_data(frame *AVFrame,
                                         typex AVFrameSideDataType) *AVFrameSideData {
     return (*AVFrameSideData)(unsafe.Pointer(C.av_frame_get_side_data(
-        (*C.AVFrame)(unsafe.Pointer(frame)), C.enum_AVFrameSideDataType(typex))))
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), 
+        C.enum_AVFrameSideDataType(typex))))
 }
 
 /**
@@ -474,7 +579,7 @@ func Av_frame_get_side_data(frame *AVFrame,
  * from the frame.
  */
 func Av_frame_remove_side_data(frame *AVFrame, typex AVFrameSideDataType)  {
-    C.av_frame_remove_side_data((*C.AVFrame)(unsafe.Pointer(frame)), 
+    C.av_frame_remove_side_data((*C.struct_AVFrame)(unsafe.Pointer(frame)), 
         C.enum_AVFrameSideDataType(typex))
 }
 
@@ -482,6 +587,9 @@ func Av_frame_remove_side_data(frame *AVFrame, typex AVFrameSideDataType)  {
 /**
  * Flags for frame cropping.
  */
+const (
+    AV_FRAME_CROP_UNALIGNED  = 1<<0 + iota
+)
 
 
 /**
@@ -501,8 +609,8 @@ func Av_frame_remove_side_data(frame *AVFrame, typex AVFrameSideDataType)  {
  * were invalid, AVERROR(ERANGE) is returned, and nothing is changed.
  */
 func Av_frame_apply_cropping(frame *AVFrame, flags int32) int32 {
-    return int32(C.av_frame_apply_cropping((*C.AVFrame)(unsafe.Pointer(frame)), 
-        C.int(flags)))
+    return int32(C.av_frame_apply_cropping(
+        (*C.struct_AVFrame)(unsafe.Pointer(frame)), C.int(flags)))
 }
 
 /**

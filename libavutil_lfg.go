@@ -34,15 +34,20 @@ import (
 
 
 
+
                     
                     
 
                    
 
-type AVLFG C.struct_AVLFG
+type AVLFG struct {
+    State [64]uint32
+    Index int32
+}
+
 
 func Av_lfg_init(c *AVLFG, seed uint32)  {
-    C.av_lfg_init((*C.AVLFG)(unsafe.Pointer(c)), C.uint(seed))
+    C.av_lfg_init((*C.struct_AVLFG)(unsafe.Pointer(c)), C.uint(seed))
 }
 
 /**
@@ -51,7 +56,7 @@ func Av_lfg_init(c *AVLFG, seed uint32)  {
  * Return value: 0 on success, negative value (AVERROR) on failure.
  */
 func Av_lfg_init_from_data(c *AVLFG, data *uint8, length uint32) int32 {
-    return int32(C.av_lfg_init_from_data((*C.AVLFG)(unsafe.Pointer(c)), 
+    return int32(C.av_lfg_init_from_data((*C.struct_AVLFG)(unsafe.Pointer(c)), 
         (*C.uchar)(unsafe.Pointer(data)), C.uint(length)))
 }
 
@@ -76,8 +81,8 @@ func Av_lfg_init_from_data(c *AVLFG, data *uint8, length uint32) int32 {
  *
  * @param out array where the two generated numbers are placed
  */
-func Av_bmg_get(lfg *AVLFG, out[2] float64)  {
-    C.av_bmg_get((*C.AVLFG)(unsafe.Pointer(lfg)), 
+func Av_bmg_get(lfg *AVLFG, out [2]float64)  {
+    C.av_bmg_get((*C.struct_AVLFG)(unsafe.Pointer(lfg)), 
         (*C.double)(unsafe.Pointer(&out[0])))
 }
 

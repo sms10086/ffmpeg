@@ -35,6 +35,7 @@ import (
 const AV_HASH_MAX_SIZE = 64
 
 
+
 /**
  * @file
  * @ingroup lavu_hash_generic
@@ -130,7 +131,9 @@ const AV_HASH_MAX_SIZE = 64
  * initialization, updating, and finalizing.
  */
 
-type AVHashContext C.struct_AVHashContext
+type AVHashContext struct {
+}
+
 
 /**
  * Allocate a hash context for the algorithm specified by name.
@@ -191,8 +194,7 @@ func Av_hash_get_name(ctx *AVHashContext) string {
  * @return            Size of the hash value in bytes
  */
 func Av_hash_get_size(ctx *AVHashContext) int32 {
-    return int32(C.av_hash_get_size(
-        (*C.struct_AVHashContext)(unsafe.Pointer(ctx))))
+    return int32(C.av_hash_get_size((*C.struct_AVHashContext)(unsafe.Pointer(ctx))))
 }
 
 /**

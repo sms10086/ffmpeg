@@ -34,6 +34,7 @@ import (
 
 
 
+
                     
                     
 
@@ -45,7 +46,11 @@ import (
  * @{
  */
 
-type AVDES C.struct_AVDES
+type AVDES struct {
+    Round_keys [3][16]uint64
+    Triple_des int32
+}
+
 
 /**
  * Allocate an AVDES context.

@@ -21,10 +21,7 @@
 
 package ffmpeg
 
-//#cgo pkg-config: libavutil
-//#include <stdint.h>
-//#include "libavutil/motion_vector.h"
-import "C"
+
 
 
 
@@ -33,6 +30,19 @@ import "C"
 
                    
 
-type AVMotionVector C.struct_AVMotionVector
+type AVMotionVector struct {
+    Source int32
+    W uint8
+    H uint8
+    Src_x int16
+    Src_y int16
+    Dst_x int16
+    Dst_y int16
+    Flags uint64
+    Motion_x int32
+    Motion_y int32
+    Motion_scale uint16
+}
+
 
                                    

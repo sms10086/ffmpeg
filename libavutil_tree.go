@@ -35,6 +35,7 @@ import (
 
 
 
+
 /**
  * @file
  * A tree container.
@@ -59,7 +60,9 @@ import (
  */
 
 
-type AVTreeNode C.struct_AVTreeNode
+type AVTreeNode struct {
+}
+
 //extern const int av_tree_node_size;
 
 /**
@@ -84,7 +87,7 @@ func Av_tree_node_alloc() *AVTreeNode {
  *         exists in the tree.
  */
 func Av_tree_find(root *AVTreeNode, key unsafe.Pointer,
-                   cmp func(key unsafe.Pointer, b unsafe.Pointer) int32, next[2] unsafe.Pointer) unsafe.Pointer {
+                   cmp func(key unsafe.Pointer, b unsafe.Pointer) int32, next [2]unsafe.Pointer) unsafe.Pointer {
     cb2 := syscall.NewCallbackCDecl(cmp)
     return (unsafe.Pointer)(unsafe.Pointer(C.av_tree_find(
         (*C.struct_AVTreeNode)(unsafe.Pointer(root)), key, 

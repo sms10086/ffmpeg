@@ -36,6 +36,7 @@ import (
 const AV_TIMECODE_STR_SIZE = 23
 
 
+
 /**
  * @file
  * Timecode helpers header
@@ -49,9 +50,21 @@ const AV_TIMECODE_STR_SIZE = 23
 
 
 
-type AVTimecodeFlag C.enum_AVTimecodeFlag
+type AVTimecodeFlag int32
+const (
+    AV_TIMECODE_FLAG_DROPFRAME AVTimecodeFlag = 1<<0 + iota
+    AV_TIMECODE_FLAG_24HOURSMAX = 1<<1
+    AV_TIMECODE_FLAG_ALLOWNEGATIVE = 1<<2
+)
 
-type AVTimecode C.struct_AVTimecode
+
+type AVTimecode struct {
+    Start int32
+    Flags uint32
+    Rate AVRational
+    Fps uint32
+}
+
 
 /**
  * Adjust frame number for NTSC drop frame time code.
@@ -140,7 +153,8 @@ func Av_timecode_make_mpeg_tc_string(buf *byte, tc25bit uint32) string {
  */
 func Av_timecode_init(tc *AVTimecode, rate AVRational, flags int32, frame_start int32, log_ctx unsafe.Pointer) int32 {
     return int32(C.av_timecode_init((*C.AVTimecode)(unsafe.Pointer(tc)), 
-        C.AVRational(rate), C.int(flags), C.int(frame_start), log_ctx))
+        *(*C.struct_AVRational)(unsafe.Pointer(&rate)), C.int(flags), 
+        C.int(frame_start), log_ctx))
 }
 
 /**
@@ -154,8 +168,8 @@ func Av_timecode_init(tc *AVTimecode, rate AVRational, flags int32, frame_start 
  * @return        0 on success, AVERROR otherwise
  */
 func Av_timecode_init_from_string(tc *AVTimecode, rate AVRational, str *byte, log_ctx unsafe.Pointer) int32 {
-    return int32(C.av_timecode_init_from_string(
-        (*C.AVTimecode)(unsafe.Pointer(tc)), C.AVRational(rate), 
+    return int32(C.av_timecode_init_from_string((*C.AVTimecode)(unsafe.Pointer(tc)), 
+        *(*C.struct_AVRational)(unsafe.Pointer(&rate)), 
         (*C.char)(unsafe.Pointer(str)), log_ctx))
 }
 
@@ -165,7 +179,8 @@ func Av_timecode_init_from_string(tc *AVTimecode, rate AVRational, str *byte, lo
  * @return 0 if supported, <0 otherwise
  */
 func Av_timecode_check_frame_rate(rate AVRational) int32 {
-    return int32(C.av_timecode_check_frame_rate(C.AVRational(rate)))
+    return int32(C.av_timecode_check_frame_rate(
+        *(*C.struct_AVRational)(unsafe.Pointer(&rate))))
 }
 
                               

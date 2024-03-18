@@ -24,8 +24,9 @@
 package ffmpeg
 
 
-//const av_always_inline = inline
-//const av_extern_inline = inline
+//const av_always_inline =  inline 
+//const av_extern_inline =  inline 
+
 
 
 /**

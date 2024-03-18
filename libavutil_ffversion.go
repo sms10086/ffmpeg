@@ -6,7 +6,8 @@
 package ffmpeg
 
 
-//const FFMPEG_VERSION = "4.1"
+//const FFMPEG_VERSION = 4.1
+
 
                           
                           

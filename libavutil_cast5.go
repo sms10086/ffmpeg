@@ -34,6 +34,7 @@ import (
 
 
 
+
                       
                       
 
@@ -50,7 +51,9 @@ import (
 
 //extern const int av_cast5_size;
 
-type AVCAST5 C.struct_AVCAST5
+type AVCAST5 struct {
+}
+
 
 /**
   * Allocate an AVCAST5 context
